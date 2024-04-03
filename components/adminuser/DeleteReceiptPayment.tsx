@@ -57,9 +57,9 @@ const DeleteReceiptPayment = () => {
     <Box display="flex">
     <Input onChange={(e) => {
             handleSearch(e);
-          }} placeholder='Buscar comprobante' sx={{width:'100%', border:1, marginBottom:1, borderRadius:"4px", marginRight:'5px'}}></Input><Button onClick={() => { getResultsReceipt(searchInput.search) }} sx={{borderRadius:"4px", border:1, marginBottom:1 ,bgcolor:'#BAA0C8', color:'black', ":hover":{bgcolor:'#6C2273', color:'white'}}}>Buscar</Button>
+          }} placeholder='Buscar comprobante' sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }}></Input><Button onClick={() => { getResultsReceipt(searchInput.search) }} sx={{borderRadius:"4px", border:1, marginBottom:"15px" ,bgcolor:'#BAA0C8', color:'black', ":hover":{bgcolor:'#6C2273', color:'white'}}}>Buscar</Button>
     </Box>
-    <FormControl sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} fullWidth>
+    <FormControl sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth>
           
           <Select
             

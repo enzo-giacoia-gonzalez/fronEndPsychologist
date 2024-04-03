@@ -3,6 +3,7 @@ import { Uistate } from './index';
 
 type UiActionType =
     | { type: 'UI - ToogleMenu' }
+    | { type: 'UI - ToogleImgVideo' }
     | { type: 'UI - ToogleNotifications', payload: boolean }
     | { type: 'UI - ToogleBorder', payload: boolean }
     | { type: 'UI - ToogleModal', payload: boolean }
@@ -11,6 +12,7 @@ type UiActionType =
     | { type: 'UI - ToogleVideo' }
     | { type: 'UI - ToogleVideoExchange' }
     | { type: 'UI - ToogleVideoSrc', payload: string }
+    | { type: 'UI - ToogleImageSrc', payload: string }
     | { type: 'UI - ToogleModalComments', payload: boolean }
 
 export const uiReducer = (state: Uistate, action: UiActionType): Uistate => {
@@ -19,6 +21,11 @@ export const uiReducer = (state: Uistate, action: UiActionType): Uistate => {
             return {
                 ...state,
                 SideMenuOpen: !state.SideMenuOpen
+            }
+        case 'UI - ToogleImgVideo':
+            return {
+                ...state,
+                ShowFiles: !state.ShowFiles
             }
 
         case 'UI - ToogleNotifications':
@@ -65,6 +72,11 @@ export const uiReducer = (state: Uistate, action: UiActionType): Uistate => {
             return {
                 ...state,
                 ShowVideoOpenSrc: action.payload
+            }
+        case 'UI - ToogleImageSrc':
+            return {
+                ...state,
+                ShowImageOpenSrc: action.payload
             }
 
         case 'UI - ToogleModalComments':

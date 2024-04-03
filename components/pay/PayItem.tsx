@@ -1,7 +1,30 @@
-import { Button, Card, CardActions, CardContent, CardMedia, ListItem, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, ListItem, Typography } from '@mui/material';
+import ButtonPaypal from './ButtonPaypal';
+import { ServiceContext } from '../../context/services';
+import { useContext, useEffect } from 'react';
+
+
+
 
 
 const PayItem = () => {
+  
+  const {getShift, shiftAll} = useContext(ServiceContext)
+  const usuarioId = localStorage.getItem('usuario')
+  
+
+  useEffect(() => {
+    getShift()
+  }, [])
+
+  console.log(shiftAll)
+
+  const shiftFind = shiftAll.filter((shift)=>shift.usuario==usuarioId)
+  
+  console.log(shiftFind)
+
+  console.log(shiftFind[0]?.img)
+
   return (
    <ListItem>
     <Card sx={{ maxWidth: 445 }}>
@@ -12,15 +35,16 @@ const PayItem = () => {
     />
     <CardContent>
       <Typography gutterBottom variant="h5" component="div">
-        Sesion de psicologia de una hora
+        {shiftFind[0]?.titulo}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-       15$
+      {shiftFind[0]?.precio}
       </Typography>
     </CardContent>
     <CardActions>
-      <Button href='/PaySessionPaypal' sx={{color:'black', ":hover": { bgcolor: "#BAA0C8", color:'white' }}} size="small">Pagar via paypal</Button>
-      <Button href='PaySessionCv' sx={{color:'black', ":hover": { bgcolor: "#BAA0C8", color:'white' }}} size="small">Pagar via transferencia bancaria</Button>
+      <Box justifyContent="center" display="flex" flexDirection="column" alignItems="center">
+      {shiftFind[0].moneda==="USD"?<ButtonPaypal shiftFind={shiftFind}/>: <Button href='PaySessionCv' sx={{color:'black', ":hover": { bgcolor: "#BAA0C8", color:'white' }}} size="small">Pagar via transferencia bancaria</Button>}
+      </Box>
     </CardActions>
   </Card>
    </ListItem>

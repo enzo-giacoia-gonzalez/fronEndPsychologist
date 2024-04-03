@@ -12,5 +12,8 @@ export default defineConfig({
   define: {
     __VALUE__: `"${process.env.VALUE}"` // wrapping in "" since it's a string
   },
+  server: {
+    host: false
+  }
   //....
 })

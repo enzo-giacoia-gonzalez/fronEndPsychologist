@@ -26,7 +26,7 @@ interface Props {
 const CourseProgramList:FC<Props> = ({videos}) => {
 
     
-    const {toogleShowVideo, toogleShowVideoSrc, toogleShowVideoExchange, toogleShowCourseProgram} = useContext(UiContext)
+    const {toogleShowVideo, toogleShowVideoSrc, toogleShowVideoExchange, toogleShowCourseProgram, toogleShowImageSrc} = useContext(UiContext)
     const {removeVideo, getIdVideo} = useContext(VideoContext)
 
     // eslint-disable-next-line prefer-const
@@ -52,7 +52,7 @@ const CourseProgramList:FC<Props> = ({videos}) => {
                 <Grid md={12} lg={7} display="flex" flexDirection="column" px={1}>
                     <Card sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', py: '20px', alignItems: 'center', px: '10px', height: 'auto' }}>
                         <Grid item md={4} lg={3} display="flex" alignItems="center">
-                            <Button onClick={() => {scrollTo(), toogleShowVideo(),toogleShowVideoExchange(), toogleShowCourseProgram(false),toogleShowVideoSrc(videos.video)}} sx={{color:'#C1A6CF'}}><PlayArrowOutlined></PlayArrowOutlined></Button>
+                            <Button onClick={() => {scrollTo(), toogleShowVideo(),toogleShowVideoExchange(), toogleShowCourseProgram(false),toogleShowVideoSrc(videos.video) , toogleShowImageSrc(videos.img)}} sx={{color:'#C1A6CF'}}><PlayArrowOutlined></PlayArrowOutlined></Button>
                             <Typography>{videos?.nombre}</Typography>
                         </Grid>
                         <Grid item md={4} lg={2} display="flex" justifyContent="center" alignItems="center">

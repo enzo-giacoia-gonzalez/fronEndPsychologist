@@ -1,10 +1,10 @@
 import { FC,useEffect,useReducer } from 'react';
 import { useNavigate, useSearchParams, createSearchParams } from 'react-router-dom';
-import axios from 'axios';
-
 import { SearchContext } from './SearchContext';
 import { searchReducer } from './searchReducer';
 import { userResponseEmail } from '../../Interfaces/users';
+import apiInstance from '../../interceptors/interceptor';
+import Swal from 'sweetalert2';
 
 export interface Searchstate {
     user: Array<[]>
@@ -46,7 +46,7 @@ const [searchParams] = useSearchParams()
     const searchUser = async () => {
 
 
-        const { data } = await axios.get(
+        const { data } = await apiInstance.get(
             import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_BUSCAR_USUARIOS_APP + "usuarios" + '/' + searchParams.get("search")
         );
 
@@ -80,7 +80,7 @@ const [searchParams] = useSearchParams()
 
     const getUserByMail = async (correo: string) => {
 
-        const { data } = await axios.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_USUARIOS_APP + "correo" + "/" + correo, {
+        const { data } = await apiInstance.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_USUARIOS_APP + "correo" + "/" + correo, {
             headers: {
                 "x-token": token,
             },
@@ -94,13 +94,41 @@ const [searchParams] = useSearchParams()
     const changeRole = async (rol: string, idUsuario:string):Promise<boolean> => {
 
         try {
-            await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_CAMBIARESTADO_USUARIO_APP + idUsuario,{rol},{ 
-                headers: {
-                    "x-token": token,
-                },
-            })
 
-            location.replace('/UserList')
+            
+            Swal.fire({
+                
+                title: "¿Estás segura?",
+                text: "Estas a punto de darle acceso a distintos puntos de la pagina",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, cambialo!",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  Swal.fire({
+                    title: "Rol cambiado!",
+                    text: ".",
+                    icon: "success"
+                  });
+
+                  await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_CAMBIARESTADO_USUARIO_APP + idUsuario,{rol},{ 
+                    headers: {
+                        "x-token": token,
+                    },
+                })
+    
+                localStorage.removeItem("token")
+                localStorage.removeItem("rol")
+                localStorage.removeItem("usuario")
+                location.replace('/login')
+                }
+              });
+
+           
+            
+
             return true
         } catch (error) {
             error
@@ -114,8 +142,26 @@ const [searchParams] = useSearchParams()
 
     const deleteUser = async (idUsuario:string):Promise<boolean> => {
 
+        Swal.fire({
+            title: "¿Estas segura?",
+            text: "Esta accion no se puede revertir",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "si, borralo!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "borrado!",
+                text: "El usuario ha sido eliminado.",
+                icon: "success"
+              });
+            }
+          });
+
         try {
-            await axios.delete(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_BORRAR_USUARIO_APP + idUsuario, { 
+            await apiInstance.delete(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_BORRAR_USUARIO_APP + idUsuario, { 
                 headers: {
                     "x-token": token,
                 },

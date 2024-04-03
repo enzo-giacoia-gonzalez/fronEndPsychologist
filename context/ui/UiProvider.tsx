@@ -8,11 +8,13 @@ export interface Uistate {
     SideNotificationsOpen:boolean
     ShowBorderOn:boolean
     ShowModalUser:boolean
+    ShowFiles:boolean
     classes : string
     showCourseProgram:boolean
     ShowVideoOpen: boolean 
     ShowVideoOpenExchange: boolean 
     ShowVideoOpenSrc: string
+    ShowImageOpenSrc:string
     ShowModalComments:boolean
 }
 
@@ -21,11 +23,13 @@ const Ui_INITIAL_STATE:Uistate = {
     SideNotificationsOpen:false,
     ShowBorderOn:false,
     ShowModalUser:false,
+    ShowFiles:false,
     classes : '',
     showCourseProgram:true,
     ShowVideoOpen: false,
     ShowVideoOpenExchange: true, 
     ShowVideoOpenSrc:'',
+    ShowImageOpenSrc:'',
     ShowModalComments:false
 }
 
@@ -74,6 +78,14 @@ const toogleShowVideoSrc = (param:string) => {
     dispatch({type:'UI - ToogleVideoSrc',payload:param })
 }
 
+const toogleShowImageSrc = (param:string) => {
+    dispatch({type:'UI - ToogleImageSrc',payload:param })
+}
+
+const toogleChangeVideoImg = () => {
+    dispatch({type:'UI - ToogleImgVideo' })
+}
+
 const toogleModalComments = (param:boolean) => {
     dispatch({type:'UI - ToogleModalComments',payload:param })
 }
@@ -91,6 +103,8 @@ const toogleModalComments = (param:boolean) => {
         toogleShowVideo,
         toogleShowVideoExchange,
         toogleShowVideoSrc,
+        toogleShowImageSrc,
+        toogleChangeVideoImg,
         toogleModalComments
     }}>
         {children}

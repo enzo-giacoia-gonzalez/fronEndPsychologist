@@ -1,18 +1,20 @@
 import { useContext } from 'react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { UiContext } from '../../context/ui'
-import { Button, Card, Grid } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import { Box, Button, Card, Grid } from '@mui/material'
 
 
 
 
 
 const CourseProgramVideo = () => {
-  const { ShowVideoOpenSrc, ShowVideoOpen, ShowVideoOpenExchange } = useContext(UiContext)
+  const { ShowVideoOpenSrc, ShowVideoOpen, ShowVideoOpenExchange, toogleChangeVideoImg, ShowFiles, ShowImageOpenSrc } = useContext(UiContext)
 
   const backToCourse = () => {
     location.replace('/CourseProgram')
 }
+
 
 
 
@@ -21,17 +23,25 @@ const CourseProgramVideo = () => {
       <Grid item display="flex" flexDirection="column" px={2} alignItems="center">
         {(ShowVideoOpen === false && ShowVideoOpenExchange === true && ShowVideoOpenSrc) ?
           <Card sx={{width: "auto" , display:"flex", flexDirection:"column" , alignItems:"end"}}>
+            <Box display="flex">
             <Button onClick={()=>{backToCourse()}} ><ArrowBackIcon/></Button>
-            <video
+            <Button onClick={()=>{toogleChangeVideoImg()}}><ChangeCircleIcon/></Button>
+            </Box>
+            {ShowFiles===true && ShowImageOpenSrc?<img
+            src={ShowImageOpenSrc}
+            alt=''
+            />
+              
+              :<video
               security=''
               controls
               poster={""}
             >
-              <source
+                <source
                 src={ShowVideoOpenSrc}
                 type=""
               />
-            </video>
+            </video>}
           </Card>
           : ""}
       </Grid>
@@ -39,17 +49,23 @@ const CourseProgramVideo = () => {
       <Grid item display="flex" flexDirection="column" px={2}>
         {(ShowVideoOpen === true && ShowVideoOpenExchange === false && ShowVideoOpenSrc) ?
           <Card sx={{ width: "auto" , display:"flex", flexDirection:"column" , alignItems:"end"} } >
+            <Box display="flex">
             <Button onClick={()=>{backToCourse()}}><ArrowBackIcon/></Button>
-            <video
+            <Button onClick={()=>{toogleChangeVideoImg()}}><ChangeCircleIcon/></Button>
+            </Box>
+            {ShowFiles===true && ShowImageOpenSrc?<img
+            src={ShowImageOpenSrc}
+            
+            />:<video
               security=''
               controls
               poster={""}
             >
-              <source
+                <source
                 src={ShowVideoOpenSrc}
                 type=""
               />
-            </video>
+            </video>}
           </Card> : ""}
       </Grid>
     </Grid>

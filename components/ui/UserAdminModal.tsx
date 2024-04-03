@@ -20,6 +20,7 @@ const UserAdminModal = () => {
                     aria-describedby="keep-mounted-modal-description"
                 >
                     <Box sx={{
+                        
                         position: 'absolute' as const,
                         top: '50%',
                         left: '50%',
@@ -33,10 +34,10 @@ const UserAdminModal = () => {
                         <Typography pl={1} id="keep-mounted-modal-title" variant="h6" component="h2">
                             Configuraciones de usuario
                         </Typography>
-                        <Button onClick={()=>{changeRole('ADMIN_ROLE',userByMail?.uid )}} sx={{color:'black'}}>Admin</Button>
-                        <Button onClick={()=>{changeRole('PATIENT_ROLE',userByMail?.uid )}} sx={{color:'black'}}>Paciente</Button>
-                        <Button onClick={()=>{changeRole('USER_ROLE',userByMail?.uid )}} sx={{color:'black'}}>Usuario</Button>
-                        <Button onClick={()=>{deleteUser(userByMail?.uid)}} sx={{color:'black'}}>Desactivar usuario</Button>
+                        <Button onClick={()=>{changeRole('ADMIN_ROLE',userByMail?.uid ), toogleModalUser(false)}} sx={{color:'black'}}>Admin</Button>
+                        <Button onClick={()=>{changeRole('PATIENT_ROLE',userByMail?.uid ), toogleModalUser(false)}} sx={{color:'black'}}>Paciente</Button>
+                        <Button onClick={()=>{changeRole('USER_ROLE',userByMail?.uid ), toogleModalUser(false)}} sx={{color:'black'}}>Usuario</Button>
+                        <Button onClick={()=>{deleteUser(userByMail?.uid), toogleModalUser(false)}} sx={{color:'black'}}>Desactivar usuario</Button>
                     </Box>
                 </Modal>
   )

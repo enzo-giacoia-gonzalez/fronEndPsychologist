@@ -3,26 +3,27 @@ import { FC, useEffect, useReducer } from 'react';
 import { VideoContext } from './VideoContext';
 import { videoReducer } from './videoReducer';
 import { addVideo, responseVideo } from '../../Interfaces/video';
-import axios from 'axios';
+import apiInstance from '../../interceptors/interceptor';
+import Swal from 'sweetalert2';
 
 
 
 export interface Videostate {
-  addFiles?: addVideo[]
-  files?: string
-  videoForEdit?:responseVideo[]
+  addFiles: addVideo[]
+  files: string
+  videoForEdit: responseVideo[]
   responseVideos: responseVideo[]
   responseVideo: responseVideo[]
-  removeFile:boolean
+  removeFile: boolean
 }
 
 const Video_INITIAL_STATE: Videostate = {
-  addFiles: undefined,
-  files: undefined,
-  videoForEdit:undefined,
+  addFiles: [],
+  files: '',
+  videoForEdit: [],
   responseVideos: [],
   responseVideo: [],
-  removeFile:false,
+  removeFile: false,
 }
 
 interface Props {
@@ -30,9 +31,9 @@ interface Props {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let img:any
+let img: any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let video:any
+let video: any
 let usuario = localStorage.getItem("usuario")
 let token = localStorage.getItem("token")
 
@@ -40,18 +41,18 @@ export const VideoProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(videoReducer, Video_INITIAL_STATE)
 
 
-  
+
   useEffect(() => {
     getVideos()
-},[])
+  }, [])
 
 
-    
-  
+
+
 
 
   const getVideos = async () => {
-    const { data } = await axios.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_VIDEOS_APP)
+    const { data } = await apiInstance.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_VIDEOS_APP)
     dispatch({ type: 'Videos - get', payload: data.videos })
   }
 
@@ -64,8 +65,8 @@ export const VideoProvider: FC<Props> = ({ children }) => {
         const files = new FormData();
 
         files.append("archivo", filevideo);
-        
-        const { data } = await axios.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEO_APP + "videos" , files )
+
+        const { data } = await apiInstance.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEO_APP + "videos", files)
 
         video = data.video
 
@@ -78,7 +79,7 @@ export const VideoProvider: FC<Props> = ({ children }) => {
 
         files.append("archivo", fileimg);
 
-        const { data } = await axios.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "videos",  files )
+        const { data } = await apiInstance.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "videos", files)
 
         img = data.img
 
@@ -86,14 +87,14 @@ export const VideoProvider: FC<Props> = ({ children }) => {
 
       }
 
-      const { data } = await axios.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP, {nombre,usuario, img, video}, {
+      const { data } = await apiInstance.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP, { nombre, usuario, img, video }, {
         headers: {
           "x-token": token,
         },
       })
 
-     
-      
+
+
       dispatch({ type: 'Videostate - Add', payload: data.video })
 
       if (data) {
@@ -102,49 +103,90 @@ export const VideoProvider: FC<Props> = ({ children }) => {
 
       return true
     } catch (error) {
-        console.log(error)
+      console.log(error)
       return false
     }
   }
 
-  const removeVideo = async(videoId:string):Promise<boolean> => {
+  const removeVideo = async (videoId: string): Promise<boolean> => {
+
+
 
     try {
-      const { data } = await axios.delete(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_ELIMINAR_VIDEOS_APP + "/" + videoId, {
-        headers: {
-          "x-token": token,
-        },
-      })
 
-      if (data.msg === "Video eliminado Exitosamente") {
-        dispatch({type:'Videostate - remove', payload:true})
-      }
 
-      if (data.msg=== "Video eliminado Exitosamente") {
-        location.replace("/CourseProgram")
-     }
+      Swal.fire({
+        title: "¿Estás segura?",
+        text: "No se puede revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, estoy segura"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Borrado!",
+            text: "Tu video ha sido eliminado",
+            icon: "success"
+          });
+
+          const { data } = await apiInstance.delete(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_ELIMINAR_VIDEOS_APP + "/" + videoId, {
+            headers: {
+              "x-token": token,
+            },
+          })
+
+          if (data.msg === "Video eliminado Exitosamente") {
+            dispatch({ type: 'Videostate - remove', payload: true })
+          }
+
+          if (data.msg === "Video eliminado Exitosamente") {
+            location.replace("/CourseProgram")
+          }
+
+        } else {
+          location.replace("/CourseProgram")
+        }
+
+
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       return true
 
     } catch (error) {
 
       console.log(error)
-      return false 
+      return false
     }
 
   }
 
 
-  const getIdVideo = (videoId:string) => {
-    localStorage.setItem("videoId",videoId)
+  const getIdVideo = (videoId: string) => {
+    localStorage.setItem("videoId", videoId)
     location.replace("/Classes/ModifyClasses")
   }
 
 
-  const goToEdit = async (videoId:string):Promise<boolean> => {
+  const goToEdit = async (videoId: string): Promise<boolean> => {
     try {
-      
-      const { data } = await axios.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_VIDEOS_APP + "/" + videoId )
+
+      const { data } = await apiInstance.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_VIDEOS_APP + "/" + videoId)
 
       dispatch({ type: 'OneVideo - get', payload: data.videos })
 
@@ -152,7 +194,7 @@ export const VideoProvider: FC<Props> = ({ children }) => {
 
 
       return true
-      
+
 
     } catch (error) {
       return false
@@ -160,20 +202,20 @@ export const VideoProvider: FC<Props> = ({ children }) => {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const editVideo = async (nombre:string, fileimg?:any, filevideo?:any):Promise<boolean> => {
+  const editVideo = async (nombre: string, fileimg?: any, filevideo?: any): Promise<boolean> => {
     try {
       const videoId = localStorage.getItem("videoId")
 
-     
+
       if (fileimg) {
 
         const formImg = new FormData();
 
         formImg.append("archivo", fileimg);
 
-        const { data } = await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "videos" + "/" + videoId,  formImg )
+        const { data } = await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "videos" + "/" + videoId, formImg)
 
-        img = data.img 
+        img = data.img
 
       }
 
@@ -181,17 +223,17 @@ export const VideoProvider: FC<Props> = ({ children }) => {
 
       if (filevideo) {
         const formVideo = new FormData();
-  
+
         formVideo.append("archivo", filevideo);
 
-        const { data } = await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEO_APP + "videos" + "/" + videoId , formVideo )
+        const { data } = await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEO_APP + "videos" + "/" + videoId, formVideo)
 
         video = data.video
-      
+
       }
-      
-      if (nombre ) {
-        await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId,{nombre}, {
+
+      if (nombre) {
+        await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId, { nombre }, {
           headers: {
             "x-token": token,
           },
@@ -201,30 +243,9 @@ export const VideoProvider: FC<Props> = ({ children }) => {
         return true
       }
 
-      if (nombre && fileimg ) {
-    
-        await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP  + "/" + videoId , {nombre,img}, {
-          headers: {
-            "x-token": token,
-          },
-        } )
-        location.replace("/CourseProgram")
-      }
+      if (nombre && fileimg) {
 
-      if (nombre && filevideo ) {
-    
-        await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP  + "/" + videoId , {nombre,img}, {
-          headers: {
-            "x-token": token,
-          },
-        } )
-        location.replace("/CourseProgram")
-      }
-      
-
-      if (nombre && fileimg && filevideo ) {
-
-        await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId , {nombre,video,img},  {
+        await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId, { nombre, img }, {
           headers: {
             "x-token": token,
           },
@@ -232,17 +253,38 @@ export const VideoProvider: FC<Props> = ({ children }) => {
         location.replace("/CourseProgram")
       }
 
-     
+      if (nombre && filevideo) {
 
-      
-      
-     return true
-    
+        await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId, { nombre, img }, {
+          headers: {
+            "x-token": token,
+          },
+        })
+        location.replace("/CourseProgram")
+      }
+
+
+      if (nombre && fileimg && filevideo) {
+
+        await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId, { nombre, video, img }, {
+          headers: {
+            "x-token": token,
+          },
+        })
+        location.replace("/CourseProgram")
+      }
+
+
+
+
+
+      return true
+
     } catch (error) {
       console.log(error)
       return false
     }
- 
+
   }
 
 

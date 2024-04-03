@@ -41,15 +41,15 @@ const UserList = () => {
             <Grid item xs={12}>
                 <Grid item xs={12} display="flex" justifyContent="center" py={10}>
                     <Card sx={{ maxWidth: { xs: '80%', sm: '50' }, width: '500px', height: { xs: '300px' }, boxShadow: 1, paddingX: 3 }}>
-                        <Typography variant="h5" sx={{ borderBottomWidth: '2px', marginTop: '18px' }}>Buscar pacientes</Typography>
+                        <Typography variant="h5" sx={{ borderBottomWidth: '2px', marginTop: '18px', marginBottom:'15px' }}>Buscar pacientes</Typography>
                         <Box display="flex">
           <Input onChange={(e) => {
             handleSearch(e);
-          }} placeholder='Nombre del usuario' sx={{ width: 'auto', border: 1, marginBottom: 1, borderRadius: "4px", marginRight: '5px' }}></Input><Button onClick={() => { getResults(searchInput.search) }} sx={{ width:'100%' , borderRadius: "4px", border: 1, marginBottom: 1, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Buscar usuario</Button>
+          }} placeholder='Nombre del usuario' sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }}></Input><Button onClick={() => { getResults(searchInput.search) }} sx={{ width:'100%' , borderRadius: "4px", border: 1, marginBottom: "15px", bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Buscar usuario</Button>
         </Box>
 
 
-                        <FormControl sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} fullWidth>
+                        <FormControl sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth>
 
                             <Select
 

@@ -32,7 +32,21 @@ export interface shiftResponseById {
     img:string,
     linksesion:string,
     precio:number,
-    pago:string
+    pago:string,
+    moneda:string,
+    estado:boolean,
+    fechayhora:string,
+    usuario:string,
+    _id:string
+}
+
+export interface shiftResponseAll{
+    titulo:string,
+    img:string,
+    linksesion:string,
+    precio:string,
+    pago:string,
+    moneda:string,
     estado:boolean,
     fechayhora:string,
     usuario:string,
@@ -66,6 +80,7 @@ export interface receiptResponseById {
     titulo:string,
     pago:string,
     precio:number,
+    moneda:string,
     estado:boolean,
     fechayhora:string,
     usuario:string,
@@ -76,6 +91,7 @@ export interface receiptResponse {
     titulo:string,
     pago:string,
     precio:number,
+    moneda:string,
     estado:boolean,
     fechayhora:string,
     usuario:string,

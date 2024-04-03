@@ -6,3 +6,5 @@ export default interface ImportMeta {
       VITE_REST_API_KEY: string;
   };
 }
+
+

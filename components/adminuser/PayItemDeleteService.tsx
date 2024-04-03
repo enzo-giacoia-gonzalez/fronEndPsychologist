@@ -55,11 +55,11 @@ const PayItemDeleteService = () => {
     <Card sx={{p:2 , display:'flex' , flexDirection:'column' ,justifyContent:'center'}} >
     <Typography variant='h5' sx={{marginBottom:3}}>Borrar una sesion</Typography>
     <Box display="flex">
-    <Input onChange={(e) => {
+    <Input  onChange={(e) => {
             handleSearch(e);
-          }} placeholder='Buscar seccion' sx={{width:'100%', border:1, marginBottom:1, borderRadius:"4px", marginRight:'5px'}}></Input><Button onClick={() => { getResultsShift(searchInput.search) }} sx={{borderRadius:"4px", border:1, marginBottom:1 ,bgcolor:'#BAA0C8', color:'black', ":hover":{bgcolor:'#6C2273', color:'white'}}}>Buscar</Button>
+          }} placeholder='Buscar seccion' sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }}></Input><Button onClick={() => { getResultsShift(searchInput.search) }} sx={{borderRadius:"4px", border:1, marginBottom:"15px" ,bgcolor:'#BAA0C8', color:'black', ":hover":{bgcolor:'#6C2273', color:'white'}}}>Buscar</Button>
     </Box>
-    <FormControl sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} fullWidth>
+    <FormControl sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth>
           
           <Select
             
@@ -74,7 +74,7 @@ const PayItemDeleteService = () => {
         
     
         
-      <Button onClick={()=>{deleteService(shiftById?._id)}} sx={{borderRadius:"4px", border:1, marginBottom:1 ,bgcolor:'#BAA0C8', color:'black', ":hover":{bgcolor:'#6C2273', color:'white'}}}>Eliminar servicio</Button>
+      <Button onClick={()=>{deleteService(shiftById?._id)}} sx={{ borderRadius: "4px", border: 1, marginBottom: 1, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Eliminar servicio</Button>
     </Card>
     </Grid>
   )

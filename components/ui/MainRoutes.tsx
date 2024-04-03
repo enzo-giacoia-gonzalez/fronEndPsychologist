@@ -1,5 +1,5 @@
 
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes} from 'react-router-dom'
 import Navbar from './Navbar';
 import Start from '../start/start';
 import SideMenu from './SideMenu';
@@ -18,20 +18,35 @@ import PatientCalendar from '../adminuser/PatientCalendar';
 import SideMenuNotifications from './SideMenuNotifications';
 import MoreNotifications from '../user/MoreNotifications';
 import PayItem from '../pay/PayItem';
-
 import PaySessionCv from '../pay/PaySessionCv';
-import PaySessionPaypal from '../pay/PaySessionPaypal';
 import ModalComments from './ModalComments';
 import Footer from '../Footer/Footer';
 import ModifyClasses from '../adminuser/ModifyClasses';
 import ReceiptPayment from '../adminuser/ReceiptPayment';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import Error404 from './Error404';
+import ForgetPassword from '../user/ForgetPassword';
+import ResetPasswordParams from '../user/ResetPasswordParams';
+
 
 
 
 
 
 const MainRoutes = () => {
+
+  const usuarioId = localStorage.getItem("usuarioId")
+
+  
+  
+  
+
   return (
+    <PayPalScriptProvider 
+    options={{
+      "clientId":import.meta.env.VITE_PAYMENT_CLIENT_ID
+    }}
+    >
     <div>
       <Navbar/>
       <ModalComments/>
@@ -39,11 +54,15 @@ const MainRoutes = () => {
       <SideMenu/>
         <Routes>
             <Route path='/' element={<Start/>}/>
+            <Route path='*' element={<Error404/>}/>
             <Route path='/CourseProgram' element={<CourseProgram/>}/>
             <Route path='/MyCourses' element={<MyCourses/>}/>
             <Route path='/PsychologySessions' element={<PsychologySessions/>}/>
             <Route path='/Login' element={<Login/>}/>
             <Route path='/Register' element={<Register/>}/>
+            <Route path='/ForgetPassword' element={<ForgetPassword/>}/>
+            
+            <Route path='/resetpassword/:token' element={<ResetPasswordParams/>} />
             <Route path='/UserList' element={<UserList/>}/>
             <Route path='/Classes/AddVideos' element={<AddClasses/>}/>
             <Route path='/Classes/ModifyClasses' element={<ModifyClasses/>}/>
@@ -56,10 +75,10 @@ const MainRoutes = () => {
             <Route path='/MoreNotifications' element={<MoreNotifications/>}/>
             <Route path='/ReceiptPayment' element={<ReceiptPayment/>}/>
             <Route path='/PaySessionCv' element={<PaySessionCv/>}/>
-            <Route path='/PaySessionPaypal' element={<PaySessionPaypal/>}/>
         </Routes>
         <Footer></Footer>
     </div>
+    </PayPalScriptProvider>
   )
 }
 

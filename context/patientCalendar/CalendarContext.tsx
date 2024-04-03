@@ -3,7 +3,7 @@ import { receiptResponse, receiptResponseById, userResponse, userResponseAll, us
 
 
 interface contextProps {
-    user: Array<[]>
+    user:  Array<[]>
     allUsers: userResponseAll[]
     userByMail: userResponse[]
     userById: userResponse[]  
@@ -19,8 +19,5 @@ interface contextProps {
     getUserByMail: (correo: string) => Promise<void>
     getReceipts: () => Promise<void>
     getReceiptById: (receiptId: string) => Promise<void>
-    addReceipt: (titulo: string, fechayhora: string, linksesion:string, precio: string, aprobado: string, moneda:string, usuario: string) => Promise<boolean>
-    putReceipt: (titulo: string, fechayhora: string, precio: number, pago: string,moneda:string, usuario: string, comprobanteId: string) => Promise<boolean>
-    deleteReceipt: (receiptId: string) => Promise<boolean>
 }
-export const ReceiptContext = createContext({} as contextProps);
+export const CalendarContext = createContext({} as contextProps);

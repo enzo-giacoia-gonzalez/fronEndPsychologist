@@ -27,6 +27,7 @@ const HistorialPaymentAdminItem:FC<Props> = ({comprobantes}) => {
     <Card sx={{p:1}}>
         <Typography marginBottom={1} variant="subtitle1">{comprobantes?.titulo}</Typography>
         <Typography marginBottom={1} variant="subtitle2">{comprobantes?.fechayhora}</Typography>
+        <Typography marginBottom={1} variant="subtitle2">{comprobantes?.precio + " " + comprobantes?.moneda}</Typography>
         <Typography marginBottom={1} variant="subtitle2">{findUserReceipt[0]?.nombre}</Typography>
         {comprobantes?.pago=="APROBADO"?<Chip sx={{marginBottom:1}} label='Pago realizado' color="success"></Chip>:  <Chip sx={{marginBottom:1}} label='Pago rechazado' color="error"></Chip>}
     </Card>

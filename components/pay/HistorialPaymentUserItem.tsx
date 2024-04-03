@@ -12,6 +12,8 @@ const HistorialPaymentUserItem:FC<Props> = ({comprobantes}) => {
     <Card sx={{p:1}}>
         <Typography marginBottom={1} variant="subtitle1">{comprobantes.titulo}</Typography>
         <Typography marginBottom={1} variant="subtitle2">{comprobantes.fechayhora}</Typography>
+        <Typography marginBottom={1} variant="subtitle2">{comprobantes.precio}</Typography>
+        <Typography marginBottom={1} variant="subtitle2">{comprobantes.moneda}</Typography>
         <Typography marginBottom={1} variant="subtitle2">Maria liz icasatti</Typography>
         {comprobantes?.pago=="APROBADO"?<Chip sx={{marginBottom:1}} label='Pago realizado' color="success"></Chip>:  <Chip sx={{marginBottom:1}} label='Pago rechazado' color="error"></Chip>}
     </Card>

@@ -1,13 +1,15 @@
-import { shiftResponseById, userResponse, userResponseShift } from '../../Interfaces/users';
+import { shiftResponseAll, shiftResponseById, userResponse, userResponseAll, userResponseShift } from '../../Interfaces/users';
 import { Servicestate } from './index';
 
 type ServicestateActionType =
-    | { type: 'findUser', payload: Array<[]> }
+    | { type: 'findUser', payload: userResponseAll[]}
     | { type: 'findUserShift', payload: userResponseShift[] }
     | { type: 'findUserById', payload: userResponse[] }
     | { type: 'findUserByMail', payload: userResponse[] }
     | { type: 'findShiftById', payload: shiftResponseById[] }
+    | { type: 'findShiftAll', payload: shiftResponseAll[] }
     | { type: 'dataResult', payload: shiftResponseById[] }
+   
 
 export const serviceReducer = (state: Servicestate, action: ServicestateActionType): Servicestate => {
     switch (action.type) {
@@ -38,11 +40,18 @@ export const serviceReducer = (state: Servicestate, action: ServicestateActionTy
                 ...state,
                 shiftById: action.payload
             }
+        case 'findShiftAll':
+            return {
+                ...state,
+                shiftAll: action.payload
+            }
         case 'dataResult':
             return {
                 ...state,
                 dataShift: action.payload
             }
+     
+
 
         default:
             return state;

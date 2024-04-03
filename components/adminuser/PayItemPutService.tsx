@@ -1,23 +1,31 @@
-import { Grid, Card, Typography, Button, Input, Box, FormControl, MenuItem, Select, InputLabel, SelectChangeEvent } from '@mui/material'
-import { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { ServiceContext } from '../../context/services';
 import React from 'react';
 import { ReceiptContext } from '../../context/receipts';
+import { Grid, Card, Typography, Button, Input, Box, FormControl, MenuItem, Select, InputLabel, SelectChangeEvent, styled } from '@mui/material'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { receiptResponse, receiptResponseById } from '../../Interfaces/users';
+
+
+interface props {
+  comprobanteId: [
+    _id:string
+  ]
+}
 
 
 
-
-const PayItemPutService = () => {
+const PayItemPutService:FC<props> = ({_id}) => {
 
   const { getResultsShift, userWithShift, getShiftById, shiftById, dataShift, getResults, getUserByMail, getUserById, userByMail, userById, user, putService, deleteService } = useContext(ServiceContext)
 
-  const {addReceipt} = useContext(ReceiptContext)
+  const { addReceipt, putReceipt, getReceipts, receiptAll } = useContext(ReceiptContext)
 
   const [searchInput, setSearchInput] = useState({ categoria: '', search: '' })
 
   const [searchInputUser, setSearchInputUser] = useState({ categoriaUser: '', searchUser: '' })
 
-  const [postInput, setPostInput] = useState({ titulo: undefined, fileImg: '', fechayhora: undefined, linksesion: undefined, precio: undefined, pago: "", usuario: "", idUsuario: undefined })
+  const [postInput, setPostInput] = useState({ titulo: undefined, fileImg: '', fechayhora: undefined, linksesion: undefined, precio: undefined, pago: "", moneda: "", usuario: "", idUsuario: undefined })
 
 
   console.log(shiftById?._id)
@@ -31,26 +39,40 @@ const PayItemPutService = () => {
       linksesion: undefined,
       precio: undefined,
       pago: "",
+      moneda: "",
       fechayhora: undefined,
 
     })
     getUserById(shiftById?.usuario)
+    getReceipts()
 
+    console.log(user)
 
-    
 
   }, [shiftById])
 
 
-  if (postInput.linksesion === undefined || postInput.precio === undefined || postInput.titulo === undefined || postInput.fechayhora === undefined || postInput.pago === "" || postInput.usuario === "") {
+  if (postInput.linksesion === undefined || postInput.precio === undefined || postInput.titulo === undefined || postInput.fechayhora === undefined || postInput.pago === "" || postInput.moneda === "") {
     postInput.linksesion = shiftById?.linksesion
     postInput.precio = shiftById?.precio
     postInput.pago = shiftById?.pago
+    postInput.moneda = shiftById?.moneda
     postInput.titulo = shiftById?.titulo
     postInput.fechayhora = shiftById?.fechayhora
-    postInput.idUsuario = shiftById?.usuario
   }
-    postInput.usuario = userById?.nombre
+  userByMail?.uid ? postInput.idUsuario = userByMail?.uid : postInput.idUsuario = shiftById?.usuario
+
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleShift = (e: any) => {
+    const shiftId = e.target.value
+    setPostInput({
+      ...postInput,
+      titulo: undefined,
+    })
+    getShiftById(shiftId)
+  }
 
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,13 +83,7 @@ const PayItemPutService = () => {
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSearchUser = (e: any) => {
-    setSearchInputUser({
-      ...searchInputUser,
-      searchUser: e.target.value,
-    });
-  };
+ 
 
   const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setPostInput({
@@ -85,14 +101,23 @@ const PayItemPutService = () => {
     })
   }
 
-  const handleSesion = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleImg = (e: any) => {
+    setPostInput({
+      ...postInput,
+      fileImg: e.target.files[0],
+    });
+  }
 
+  const handleSesion = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 
     setPostInput({
       ...postInput,
       linksesion: e.target.value
     })
   }
+
+
 
   const handlePrecio = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setPostInput({
@@ -102,41 +127,17 @@ const PayItemPutService = () => {
   }
 
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleShift = (e: any) => {
-    const shiftId = e.target.value
+  const handleMoneda = (event: SelectChangeEvent) => {
     setPostInput({
       ...postInput,
-      titulo: undefined,
+      moneda: event.target.value as string
     })
-    getShiftById(shiftId)
-  }
-
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSearchUsuario = (e: SelectChangeEvent) => {
-
-    setPostInput({
-      ...postInput,
-      usuario: e.target.value
-    })
-    getUserByMail(e.target.value)
-  }
-
-  console.log(userByMail)
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleHiddenValue = (e: any) => {
-    const id = e.target.value
-    setPostInput({
-      ...postInput,
-      usuario: id
-    })
-  }
 
 
-
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleAprobado = (event: SelectChangeEvent) => {
     setPostInput({
       ...postInput,
       pago: event.target.value as string
@@ -145,28 +146,85 @@ const PayItemPutService = () => {
 
 
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSearchUsuario = (e: SelectChangeEvent) => {
+
+    console.log(e.target.value)
+
+    setPostInput({
+      ...postInput,
+      usuario: e.target.value
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getUserByMail(e.target.value)
+  }
+
+
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   const handleSearchUser = (e: any) => {
+    setSearchInputUser({
+      ...searchInputUser,
+      searchUser: e.target.value,
+    });
+  };
+
+
+
+  const comprobanteId = receiptAll.filter((comprobante)=>comprobante.usuario===shiftById?.usuario )
+
+  console.log(comprobanteId)
+
+
+
+
+
   useEffect(() => {
-
-    if (dataShift?.pago==="APROBADO") {
-      addReceipt(postInput.titulo,postInput.fechayhora, postInput.precio, postInput.pago, postInput.idUsuario)
-      deleteService(shiftById?._id)
-      location.replace('/PayItemService')
+    if (shiftById?.pago === "RECHAZADO") {
+      if (dataShift?.pago === "APROBADO") {
+        addReceipt(postInput.titulo, postInput.fechayhora, postInput.linksesion, postInput.precio, postInput.pago, postInput.moneda, postInput.idUsuario)
+        
+      }
     }
-  }, [dataShift?.pago])
-  
 
+    if (shiftById?.pago === "APROBADO") {
+   
+        putReceipt(postInput.titulo, postInput.fechayhora, postInput.precio, postInput.pago, postInput.moneda, postInput.idUsuario, comprobanteId[0]?._id)
+        
+      
+    }
+    
+
+  }, [dataShift?.pago])
+
+
+
+
+
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+
+  });
 
 
   return (
     <Grid item xs>
-      <Card sx={{ p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
+      <Card sx={{ p: 2, marginBottom: 15, display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
         <Typography variant='h5' sx={{ marginBottom: 3 }}>Editar una nueva sesion</Typography>
         <Box display="flex">
           <Input onChange={(e) => {
             handleSearch(e);
-          }} placeholder='Buscar seccion' sx={{ width: '100%', border: 1, marginBottom: 1, borderRadius: "4px", marginRight: '5px' }}></Input><Button onClick={() => { getResultsShift(searchInput.search) }} sx={{ borderRadius: "4px", border: 1, marginBottom: 1, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Buscar</Button>
+          }} placeholder='Buscar seccion' sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input><Button onClick={() => { getResultsShift(searchInput.search) }} sx={{ borderRadius: "4px", border: 1, marginBottom: "15px", bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Buscar</Button>
         </Box>
-        <FormControl sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} fullWidth>
+        <FormControl variant='standard' sx={{ width: '100%', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} >
 
           <Select
 
@@ -179,46 +237,90 @@ const PayItemPutService = () => {
           </Select>
         </FormControl>
 
-        <Input onChange={(e) => { handleTitle(e) }} placeholder='Titulo' value={postInput.titulo === undefined ? shiftById?.titulo : postInput.titulo} sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} name='titulo' type='text'></Input>
-        <Input placeholder='Imagen' sx={{ marginBottom: 1, borderRadius: "4px" }} type='file'></Input>
-        <Input onChange={(e) => { handleTime(e) }} placeholder='Hora y dia de la sesion' value={postInput.fechayhora === undefined ? shiftById?.fechayhora : postInput.fechayhora} sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} name='fechayhora' type='datetime-local'></Input>
-        <Input onChange={(e) => { handleSesion(e) }} placeholder='Link de la sesion' value={postInput.linksesion === undefined ? shiftById?.linksesion : postInput.linksesion} sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} name='linksesion' type='text'></Input>
-        <Input onChange={(e) => { handlePrecio(e) }} placeholder='Precio de la sesion' value={postInput.precio === undefined ? shiftById?.precio : postInput.precio} sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} name='precio' type='text'></Input>
-        <FormControl sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} fullWidth>
-          <InputLabel id="demo-simple-select-label">{postInput.pago}</InputLabel>
-          <Select
+        <Input onChange={(e) => { handleTitle(e) }} placeholder='Titulo' value={postInput.titulo === undefined ? shiftById?.titulo : postInput.titulo} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} name='titulo' type='text'></Input>
+        <Input onChange={(e) => { handleTime(e) }} placeholder='Hora y dia de la sesion' value={postInput.fechayhora === undefined ? shiftById?.fechayhora : postInput.fechayhora} name='fechayhora' type='datetime-local'></Input>
+        <Button onChange={(e) => { handleImg(e) }} sx={{ bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' }, width: '100%', border: 1, borderColor: 'white', marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>Upload file <VisuallyHiddenInput type="file" /></Button>
+
+        <Input onChange={(e) => { handleSesion(e) }} placeholder='Link de la sesion' value={postInput.linksesion === undefined ? shiftById?.linksesion : postInput.linksesion} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} name='linksesion' type='text'></Input>
+        {shiftById?.pago === "RECHAZADO" ? <Input onChange={(e) => { handlePrecio(e) }} placeholder='Precio de la sesion' value={postInput.precio === undefined ? shiftById?.precio : postInput.precio} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} name='precio' type='text'></Input> : <Input onChange={(e) => { handlePrecio(e) }} placeholder='Precio de la sesion' value={postInput.precio === undefined ? shiftById?.precio : postInput.precio} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} readOnly name='precio' type='text'></Input>}
+
+
+
+
+        <FormControl fullWidth sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }}>
+          <InputLabel id="demo-simple-select-label">{postInput.moneda}</InputLabel>
+          {shiftById?.pago === "RECHAZADO" ? <Select
+
             labelId="demo-simple-select-label"
             id="demo-simple-select"
+            value={postInput.moneda}
+            label="moneda"
+            onChange={handleMoneda}
+          >
+            <MenuItem value={"USD"}>USD</MenuItem>
+            <MenuItem value={"ARG"}>ARG</MenuItem>
+          </Select> :
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={postInput.moneda}
+              label="moneda"
+              onChange={handleMoneda}
+
+            >
+              <MenuItem value={postInput.moneda}>{postInput.moneda}</MenuItem>
+            </Select>}
+        </FormControl>
+
+
+
+
+        <FormControl sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} >
+          <InputLabel id="demo-simple-select-labelll">{postInput.pago}</InputLabel>
+          {shiftById?.pago === "RECHAZADO" && shiftById?.moneda === "ARG" ? <Select
+            labelId="demo-simple-select-labelll"
+            id="demo-simple-selecttt"
             value={postInput.pago}
             label="Age"
-            onChange={handleChange}
+            onChange={handleAprobado}
           >
             <MenuItem value={"APROBADO"}>APROBADO</MenuItem>
             <MenuItem value={"RECHAZADO"}>RECHAZADO</MenuItem>
-          </Select>
+          </Select> :
+
+            <Select
+              labelId="demo-simple-select-labelll"
+              id="demo-simple-selecttt"
+              readOnly
+              value={postInput.pago}
+              label="Age"
+              onChange={handleAprobado}
+            >
+              <MenuItem value={postInput.pago}>{postInput.pago}</MenuItem>
+            </Select>}
         </FormControl>
 
-        <Input onChange={(e) => { handleHiddenValue(e) }} type="hidden" value={postInput.idUsuario === undefined ? userById?.uid : userByMail.uid} />
+
         <Box display="flex">
           <Input onChange={(e) => {
             handleSearchUser(e);
-          }} placeholder='Buscar usuario a cambiar' sx={{ width: '100%', border: 1, marginBottom: 1, borderRadius: "4px", marginRight: '5px' }}></Input><Button onClick={() => { getResults(searchInputUser.searchUser) }} sx={{ borderRadius: "4px", border: 1, marginBottom: 1, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Buscar</Button>
+          }} placeholder='Buscar usuario a cambiar' sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }}></Input><Button onClick={() => { getResults(searchInputUser.searchUser) }} sx={{ borderRadius: "4px", border: 1, marginBottom: "15px", bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Buscar</Button>
         </Box>
 
 
 
 
-        <FormControl sx={{ border: 1, marginBottom: 1, borderRadius: "4px" }} fullWidth>
+        <FormControl sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }}>
 
-          <InputLabel id="usuarioname">{postInput.usuario}</InputLabel>
+          <InputLabel id="usuarioname">{postInput.usuario === "" ? userById?.nombre : postInput.usuario}</InputLabel>
 
-          <Select
+          {shiftById?.pago === "RECHAZADO" ? <Select
             labelId="usuarioname"
             id="usuario"
             label="usuariook"
             onChange={handleSearchUsuario}
             displayEmpty
-            value={postInput.usuario}
+            value={postInput.usuario === "" ? userById?.nombre : postInput.usuario}
           >
 
 
@@ -228,10 +330,27 @@ const PayItemPutService = () => {
             })}
 
 
-          </Select>
+          </Select> : <Select
+            labelId="usuarioname"
+            id="usuario"
+            label="usuariook"
+            onChange={handleSearchUsuario}
+            displayEmpty
+            readOnly
+            value={postInput.usuario === "" ? userById?.nombre : postInput.usuario}
+          >
+
+
+
+
+            <MenuItem value={postInput.usuario}>{postInput.usuario}</MenuItem>
+
+
+
+          </Select>}
         </FormControl>
 
-        <Button onClick={() => { putService(postInput.titulo, postInput.fileImg, postInput.fechayhora, postInput.linksesion, postInput.precio,postInput.pago, postInput.idUsuario, shiftById?._id) }} sx={{ borderRadius: "4px", border: 1, marginBottom: 1, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Agregar servicio</Button>
+        <Button onClick={() => { putService(postInput.titulo, postInput.fileImg, postInput.fechayhora, postInput.linksesion, postInput.precio, postInput.pago, postInput.moneda, postInput.idUsuario, shiftById?._id) }} sx={{ borderRadius: "4px", border: 1, marginBottom: 1, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' } }}>Agregar servicio</Button>
       </Card>
     </Grid>
   )

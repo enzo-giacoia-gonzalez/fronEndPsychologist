@@ -8,6 +8,8 @@ import { VideoProvider } from '../context/video/VideoProvider';
 import { ServiceProvider } from '../context/services';
 import { ReceiptProvider } from '../context/receipts';
 import { SearchProvider } from '../context/searchUser/SearchProvider';
+import { CalendarProvider } from '../context/patientCalendar/CalendarProvider';
+
 
 
 
@@ -16,21 +18,24 @@ function App() {
   
 
   return (
-   
-    <ReceiptProvider>
-    <VideoProvider>
-    <UiProvider>
-    <SearchProvider>
-    <AuthProvider>
-      <ServiceProvider>
-   <MainRoutes></MainRoutes>
-   </ServiceProvider>
-   </AuthProvider>
-   </SearchProvider>
-    </UiProvider>
-    </VideoProvider>
-    </ReceiptProvider>
 
+   
+   
+ <CalendarProvider>
+        <ReceiptProvider>
+          <VideoProvider>
+            <UiProvider>
+              <SearchProvider>
+                <AuthProvider>
+                  <ServiceProvider>
+                    <MainRoutes></MainRoutes>
+                  </ServiceProvider>
+                </AuthProvider>
+              </SearchProvider>
+            </UiProvider>
+          </VideoProvider>
+        </ReceiptProvider>
+      </CalendarProvider>
   )
 }
 

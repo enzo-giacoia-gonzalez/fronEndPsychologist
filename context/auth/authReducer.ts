@@ -2,8 +2,8 @@ import { loginResponse, registerResponse } from '../../Interfaces/login';
 import { Authstate } from './index';
 
 type AuthActionType =
-    | { type: 'Auth - login', payload: loginResponse }
-    | { type: 'Auth - register', payload: registerResponse }
+    | { type: 'Auth - login', payload: loginResponse[] }
+    | { type: 'Auth - register', payload: registerResponse[] }
 
 export const Authreducer = (state: Authstate, action: AuthActionType): Authstate => {
     switch (action.type) {

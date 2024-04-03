@@ -1,8 +1,24 @@
+import { useContext, useEffect } from "react"
+import { ServiceContext } from "../../context/services"
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, Grid, Link } from "@mui/material"
 import img from "../../img/sanamente.png"
 
 
+
 const PsychologySessions = () => {
+
+  const {getShift, shiftAll} = useContext(ServiceContext)
+
+ const usuarioId =  localStorage.getItem("usuario")
+
+  useEffect(() => {
+    getShift()
+  }, [])
+  
+ const turnoDisponible = shiftAll.filter((turno)=> turno.usuario===usuarioId)
+
+ console.log(turnoDisponible)
+
   return (
     <Grid container py={8}>
       <Grid item xs={12} display="flex" justifyContent="space-between" sx={{flexDirection:{xs:'column', md:'row'}, alignItems:{xs:'center', md:'unset'}}} >
@@ -29,8 +45,9 @@ const PsychologySessions = () => {
   </Card>
       </Grid>
       <Grid item xs={12} md={4} sx={{marginLeft:{xs:'15px',md:8}, marginRight:{xs:'15px',md:'0px'}}}>
-        <Typography mb={1} variant="h5">Sí ya te comunicaste con el psicólogo</Typography>
-        <Link href="/PayItem" color="#712277">Puede realizar tu pago por aquí</Link>
+      {!turnoDisponible[0]?.precio?<Typography mb={1} variant="h6">Habla con tu psicologa para que pueda asignarte un turno</Typography>:""}
+      {turnoDisponible[0]?.precio?<Typography mb={1} variant="h5">Tu psicologa ya ha asignado tu turno</Typography>:""}
+       {turnoDisponible[0]?.precio? <Link href="/PayItem" color="#712277">Puedes realizar tu pago por aquí</Link>:""}
       </Grid>
       </Grid>
      

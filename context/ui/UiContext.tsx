@@ -7,9 +7,11 @@ interface contextProps {
    ShowBorderOn:boolean;
    ShowModalUser:boolean;
    showCourseProgram:boolean;
+   ShowFiles:boolean;
    ShowVideoOpen: boolean;
    ShowVideoOpenExchange: boolean;
    ShowVideoOpenSrc:string;
+   ShowImageOpenSrc:string;
    classes: string;
    ShowModalComments:boolean;
    toogleSideMenu: () => void; 
@@ -20,6 +22,8 @@ interface contextProps {
    toogleShowVideoExchange: () => void
    toogleShowCourseProgram: (param:boolean) => void;
    toogleShowVideoSrc: (param: string) => void
+   toogleShowImageSrc: (param: string) => void
+   toogleChangeVideoImg: () => void
    toogleSideNotifications: (param:boolean) => void;
    toogleModalComments: (param:boolean) => void;
 }

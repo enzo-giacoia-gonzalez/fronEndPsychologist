@@ -1,21 +1,25 @@
 import { FC, useEffect, useReducer } from 'react';
 import { useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
-import axios, { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import { ServiceContext } from './ServiceContext';
 import { serviceReducer } from './serviceReducer';
-import { shiftResponseById, userResponse, userResponseShift } from '../../Interfaces/users';
+import { shiftResponseAll, shiftResponseById, userResponse, userResponseAll, userResponseShift } from '../../Interfaces/users';
+import apiInstance from '../../interceptors/interceptor';
+import Swal from 'sweetalert2';
 
 
 
 
 
 export interface Servicestate {
-  user: Array<[]>
+  user: userResponseAll[]
   userWithShift: userResponseShift[]
   userByMail: userResponse[]
   userById: userResponse[]
   shiftById: shiftResponseById[]
+  shiftAll:shiftResponseAll[]
   dataShift: shiftResponseById[]
+  
 }
 
 const Service_INITIAL_STATE: Servicestate = {
@@ -24,7 +28,9 @@ const Service_INITIAL_STATE: Servicestate = {
   userByMail: [],
   userById: [],
   shiftById: [],
-  dataShift:[]
+  shiftAll:[],
+  dataShift:[],
+  
 }
 
 interface Props {
@@ -35,7 +41,7 @@ interface Props {
 export const ServiceProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(serviceReducer, Service_INITIAL_STATE)
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
   const navigate = useNavigate()
 
@@ -47,6 +53,7 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
     searchUser()
     searchUserShifts()
+    
 
   }, [searchParams])
 
@@ -56,7 +63,7 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
   const searchUser = async () => {
 
-    const { data } = await axios.get(
+    const { data } = await apiInstance.get(
       import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_BUSCAR_USUARIOS_APP + "usuarios" + '/' + searchParams.get("search")
     );
 
@@ -83,19 +90,29 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
     }
 
 
+    
     navigate({ pathname: "PayItemService", search: `?${createSearchParams(params)}` })
 
+    
   }
 
 
   const searchUserShifts = async () => {
 
-    const { data } = await axios.get(
+    const { data } = await apiInstance.get(
       import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_BUSCAR_USUARIOS_APP + "turnos" + '/' + searchParams.get("search")
     );
 
     dispatch({ type: 'findUserShift', payload: data.results })
 
+    console.log(data.results)
+
+   
+    
+    
+
+  
+   
 
 
   }
@@ -117,15 +134,20 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
     }
 
 
+
     navigate({ pathname: "PayItemService", search: `?${createSearchParams(params)}` })
 
+    
+
   }
+
+  
 
 
 
   const getUserByMail = async (correo: string) => {
 
-    const { data } = await axios.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_USUARIOS_APP + "correo" + "/" + correo, {
+    const { data } = await apiInstance.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_USUARIOS_APP + "correo" + "/" + correo, {
       headers: {
         "x-token": token,
       },
@@ -143,7 +165,7 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
     try {
       if (id != undefined) {
-        const { data } = await axios.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_USUARIOS_APP + id, {
+        const { data } = await apiInstance.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_USUARIOS_APP + id, {
           headers: {
             "x-token": token,
           },
@@ -171,12 +193,31 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
 
 
-    const { data } = await axios.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_TURNOS_APP + "/" + shiftId, {
+    const { data } = await apiInstance.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_TURNOS_APP + "/" + shiftId, {
       headers: {
         "x-token": token,
       },
     })
     dispatch({ type: 'findShiftById', payload: data.turnos })
+    
+
+
+
+  }
+
+  const getShift = async () => {
+
+
+
+
+
+
+    const { data } = await apiInstance.get(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_OBTENER_TURNOS_APP, {
+      headers: {
+        "x-token": token,
+      },
+    })
+    dispatch({ type: 'findShiftAll', payload: data.turnos })
 
 
 
@@ -186,7 +227,7 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
 
 
-  const addService = async (titulo: string, fileImg: any, fechayhora: string, linksesion: string, precio: string, usuario: any): Promise<boolean> => {
+  const addService = async (titulo: string, fileImg: string, fechayhora: string, linksesion: string, precio: string, moneda:string, usuario: string): Promise<boolean> => {
     try {
       if (fileImg) {
 
@@ -194,13 +235,13 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
         files.append("archivo", fileImg);
 
-        const { data } = await axios.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "turnos", files)
+        const { data } = await apiInstance.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "turnos", files)
 
         img = data.img
       }
 
 
-      const { data } = await axios.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_CREAR_TURNOS_APP, { titulo, img, fechayhora, linksesion, precio, usuario },
+      const { data } = await apiInstance.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_CREAR_TURNOS_APP, { titulo, img, fechayhora, linksesion, precio,moneda, usuario },
         {
           headers: {
             "x-token": token,
@@ -215,13 +256,15 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
       
       return true
     } catch (error) {
+      error
       return false
     }
   }
 
 
 
-  const putService = async (titulo: string, fileImg: any, fechayhora: string, linksesion: string, precio: string, pago:string, usuario: string, turnoId: string): Promise<boolean> => {
+ 
+  const putService = async (titulo: string, fileImg: string, fechayhora: string, linksesion: string, precio: string, pago:string, moneda:string, usuario: string, turnoId: string): Promise<boolean> => {
     try {
       if (fileImg) {
 
@@ -229,12 +272,12 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
         files.append("archivo", fileImg);
 
-        const { data } = await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "turnos" + "/" + turnoId, files)
+        const { data } = await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_IMAGEN_APP + "turnos" + "/" + turnoId, files)
 
         img = data.img
       }
 
-      const { data } = await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_EDITAR_TURNOS_APP + turnoId, { titulo, img, fechayhora, linksesion, precio, pago, usuario },
+      const { data } = await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_EDITAR_TURNOS_APP + turnoId, { titulo, img, fechayhora, linksesion, precio, pago, moneda, usuario },
         {
           headers: {
             "x-token": token,
@@ -251,7 +294,7 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
 
       if (fileImg === undefined) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data} : any = await axios.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_EDITAR_TURNOS_APP + turnoId, { titulo, fechayhora, linksesion, precio,pago, usuario },
+        const { data} = await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_EDITAR_TURNOS_APP + turnoId, { titulo, fechayhora, linksesion, precio,pago,moneda, usuario },
           {
             headers: {
               "x-token": token,
@@ -276,23 +319,43 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  
 
 
-  const deleteService = async (turnoId: string) => {
+  const deleteService = async (turnoId: string):Promise<boolean> => {
 
     try {
-      const { data } = await axios.delete(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_ELIMINAR_TURNOS_APP + turnoId,
-        {
-          headers: {
-            "x-token": token,
-          },
-        }
-      )
 
-      if (data.turnoBorrado){
-        location.replace('/PayItemService')
-      }
+
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "No se pueden revertir los cambios!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, borralo!"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Borrado!",
+            text: "Su turno ha sido eliminado.",
+            icon: "success"
+          });
+          
+          await apiInstance.delete(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_ELIMINAR_TURNOS_APP + turnoId,
+            {
+              headers: {
+                "x-token": token,
+              },
+            }
+          )
+    
+         location.replace("/PayItemService")
+          
+        }
+      });
+    
 
       return true
     } catch (error) {
@@ -311,9 +374,11 @@ export const ServiceProvider: FC<Props> = ({ children }) => {
       getUserById,
       getUserByMail,
       getShiftById,
+      getShift,
       addService,
       putService,
-      deleteService
+      deleteService,
+      
 
 
     }}>
