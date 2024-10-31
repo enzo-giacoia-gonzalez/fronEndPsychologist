@@ -1,4 +1,4 @@
-import { Grid, Card, Typography, Button, Input, Box, FormControl, MenuItem, Select } from '@mui/material'
+import { Grid, Card, Typography, Button, Input, Box, FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { useContext, useEffect, useState } from 'react';
 import { ServiceContext } from '../../context/services';
 
@@ -31,8 +31,8 @@ const PayItemDeleteService = () => {
   
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleShift= (e:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    const shiftId = e.target.value
+  const handleShift= (e: SelectChangeEvent<unknown>) => {
+    const shiftId = e.target.value as unknown as string
     getShiftById(shiftId)
 }
 
@@ -67,7 +67,7 @@ const PayItemDeleteService = () => {
             displayEmpty
           >
             {userWithShift.map((users, index) => {
-              return (<MenuItem key={index} value={users?._id}>{users?.titulo}</MenuItem>)
+              return (<MenuItem key={index} value={users?._id}>{users?.titulo + "  " + users?.fechayhora }</MenuItem>)
             })}
           </Select>
         </FormControl>

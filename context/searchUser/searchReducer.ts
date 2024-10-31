@@ -1,9 +1,9 @@
-import { userResponseEmail } from '../../Interfaces/users';
+import { userResponseEmail, userResponseSearch } from '../../Interfaces/users';
 import { Searchstate } from './index';
 
 type SearchstateActionType =
-    | { type: 'findUser', payload: Array<[]> }
-    | { type: 'findUserByMail', payload:userResponseEmail[] }
+    | { type: 'findUser', payload: userResponseSearch[] }
+    | { type: 'findUserByMail', payload:userResponseEmail }
 
 export const searchReducer = (state: Searchstate, action: SearchstateActionType): Searchstate => {
     switch (action.type) {

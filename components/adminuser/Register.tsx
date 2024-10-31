@@ -8,8 +8,13 @@ const Register = () => {
 
     const {registerUser} = useContext(AuthContext)
 
-    const [handleInput, setHandleInput] = useState({nombre:'', correo:'', dni:'', password:'', repeatpassword:'', recordartucontrasena:''})
+    const [handleInput, setHandleInput] = useState({nombre:'', apellido:'', correo:'', dni:'', password:'', repeatpassword:'', recordartucontrasena:''})
 
+
+    const onSubmit = (e: React.SyntheticEvent) => {
+        e?.preventDefault()
+        registerUser(handleInput.nombre, handleInput.apellido, handleInput.correo, handleInput.dni, handleInput.password, handleInput.repeatpassword, handleInput.recordartucontrasena)
+    }
 
     const handleUsuario = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setHandleInput({
@@ -17,6 +22,14 @@ const Register = () => {
            nombre:e.target.value,
         })
     }
+
+    const handleLastName = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setHandleInput({
+            ...handleInput,
+           apellido:e.target.value,
+        })
+    }
+    
 
     const handleCorreo = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setHandleInput({
@@ -64,6 +77,8 @@ const Register = () => {
 
                         <Input onChange={(e)=>{handleUsuario(e)}} type='text' name='nombre' placeholder='Nombre'  sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
                      
+                        <Input onChange={(e)=>{handleLastName(e)}} type='text' name='apellido' placeholder='Apellido'  sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
+                        
                         <Input onChange={(e)=>{handleCorreo(e)}} type='text' name='correo' placeholder='Correo'  sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
 
                         <Input onChange={(e)=>{handleDni(e)}} type='text' name='dni' placeholder='Dni'  sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
@@ -74,7 +89,7 @@ const Register = () => {
                         <Input sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} onChange={(e)=>{handleRepeatPassword(e)}} type='password' name='repetircontraseña' placeholder='Repetir contraseña' fullWidth></Input>
 
                         <Input sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} onChange={(e)=>{handleRecordar(e)}} type='password' name='recordartucontrasena' placeholder='Recordar tu contraseña' fullWidth></Input>
-                        <Button onClick={()=>{registerUser(handleInput.nombre, handleInput.correo, handleInput.dni,handleInput.password, handleInput.repeatpassword, handleInput.recordartucontrasena)}} fullWidth sx={{marginTop:'18px', marginBottom:'18px',paddingY:2 , bgcolor:'#BAA0C8', color:'black',  ":hover":{bgcolor:'#6C2273', color:'white'}}} type='submit'>Registrar</Button>
+                        <Button onClick={(e)=>{onSubmit(e)}} fullWidth sx={{marginTop:'18px', marginBottom:'18px',paddingY:2 , bgcolor:'#BAA0C8', color:'black',  ":hover":{bgcolor:'#6C2273', color:'white'}}} type='submit'>Registrar</Button>
                         <Link underline="hover" color="#6C2273" href={"/login"}>Si ya tienes una cuenta has click</Link>
                     </Card>
                 </Grid>

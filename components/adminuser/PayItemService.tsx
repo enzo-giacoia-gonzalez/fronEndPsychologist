@@ -16,9 +16,9 @@ const PayItemService = () => {
        <Typography marginTop="80px" marginBottom="20px">Turnos</Typography>
       <Grid container direction="row" justifyContent="center" alignItems="center" >
      
-        <Button sx={{height:'60px', marginBottom:5}} onClick={()=>{setAction("postService")}}><AddIcon/></Button>
-        <Button sx={{height:'60px', marginBottom:5}} onClick={()=>{setAction("putService")}}><ModeEditIcon/></Button>
-        <Button sx={{height:'60px', marginBottom:5}} onClick={()=>{setAction("deleteService")}}><DeleteForeverIcon/></Button>
+        <Button sx={{height:'50px', marginRight:'8px', marginBottom:5, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' }}} onClick={()=>{setAction("postService")}}><AddIcon/></Button>
+        <Button sx={{height:'50px', marginRight:'8px', marginBottom:5, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' }}} onClick={()=>{setAction("putService")}}><ModeEditIcon/></Button>
+        <Button sx={{height:'50px', marginRight:'8px', marginBottom:5, bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' }}} onClick={()=>{setAction("deleteService")}}><DeleteForeverIcon/></Button>
         </Grid>
       <Grid container direction="column" alignItems="center">
         {action==="postService"?<PayItemAddService/>:""}

@@ -1,5 +1,5 @@
 import {  useContext, useEffect, useState } from 'react'
-import { Card, FormControl, Grid, Input, MenuItem, Select, Typography, Button, Box } from '@mui/material';
+import { Card, FormControl, Grid, Input, MenuItem, Select, Typography, Button, Box, SelectChangeEvent } from '@mui/material';
 
 import { CalendarContext } from '../../context/patientCalendar';
 
@@ -14,8 +14,10 @@ const PatientCalendar = () => {
 
   const [searchInput, setSearchInput] = useState({ categoria: '', search: '' })
   
-  const [postInput, setPostInput] = useState({ titulo: undefined, fechayhora:undefined, linksesion:undefined, precio:undefined, pago:undefined,usuario:undefined, idUsuario: undefined})
+  const [postInput, setPostInput] = useState({ titulo: '', fechayhora:'', linksesion:'', precio:0, pago:'',usuario:'', idUsuario: ''})
 
+
+  console.log(userById)
 
   console.log(receiptById?._id)
 
@@ -23,18 +25,19 @@ const PatientCalendar = () => {
     
     setPostInput({
       ...postInput,
-      usuario:undefined,
-      idUsuario:undefined,
-      pago:undefined,
-      precio:undefined,
-      fechayhora:undefined,
+      usuario:'',
+      idUsuario:'',
+      pago:'',
+      precio:0,
+      fechayhora:'',
     })
     getUserById(receiptById?.usuario)
+    
 
 }, [receiptById])
 
 
-if(postInput.pago===undefined || postInput.precio===undefined || postInput.titulo===undefined || postInput.fechayhora===undefined || postInput.linksesion===undefined ){
+if(postInput.pago==='' || postInput.precio===0 || postInput.titulo==='' || postInput.fechayhora==='' || postInput.linksesion==='' ){
       postInput.pago=receiptById?.pago
       postInput.precio=receiptById?.precio
       postInput.titulo=receiptById?.titulo
@@ -42,15 +45,15 @@ if(postInput.pago===undefined || postInput.precio===undefined || postInput.titul
       postInput.linksesion=receiptById?.linksesion
 }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSearch = (e: any) => {
+
+  const handleSearch = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setSearchInput({
       ...searchInput,
       search: e.target.value,
     });
   };
   
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 
 
   const handleLink = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -62,18 +65,13 @@ if(postInput.pago===undefined || postInput.precio===undefined || postInput.titul
   }
 
 
-  const handleTime = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setPostInput({
-      ...postInput,
-      fechayhora:e.target.value
-    })
-  }
+
 
 
   const handlePrecio = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setPostInput({
       ...postInput,
-      precio:e.target.value
+      precio:e.target.value as unknown as number
     })
   }
 
@@ -83,22 +81,19 @@ if(postInput.pago===undefined || postInput.precio===undefined || postInput.titul
   
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleReceipt= (e:any) => {
-    const receiptId = e.target.value
+
+  const handleReceipt= (e: SelectChangeEvent<unknown>) => {
+    const receiptId = e.target.value as unknown as string
     setPostInput({
       ...postInput,
-      titulo:undefined,
+      titulo:'',
     })
     getReceiptById(receiptId)
 }
 
 
 console.log(postInput.precio)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 
   return (
@@ -122,9 +117,9 @@ console.log(postInput.precio)
             })}
           </Select>
         </FormControl>
-            <Input readOnly placeholder='Nombre de la persona' value={postInput.usuario===undefined?userById?.nombre:userByMail.nombre} sx={{ width:'100%', border:1, borderColor:'white', marginBottom:"15px", borderRadius:"4px", marginRight:'5px'}} type='text'></Input>
-            <Input readOnly onChange={(e)=>{handlePrecio(e)}} value={postInput.precio===undefined?receiptById?.precio:postInput.precio} placeholder='Precio que pago' sx={{ width:'100%', border:1, borderColor:'white', marginBottom:"15px", borderRadius:"4px", marginRight:'5px'}} type='text' name='precio'></Input>
-            <Input readOnly onChange={(e)=>{handleLink(e)}} value={postInput.linksesion===undefined?receiptById?.linksesion:postInput.linksesion} placeholder='Link de la sesion' sx={{ width:'100%', border:1, borderColor:'white', marginBottom:"15px", borderRadius:"4px", marginRight:'5px'}} type='text' name='precio'></Input>
+            <Input readOnly placeholder='Nombre de la persona' value={postInput.usuario===''?userById?.nombre + " " + userById?.apellido + " " + userById?.dni :userByMail.nombre +" " + userByMail.apellido+ " " + userByMail?.dni  } sx={{ width:'100%', border:1, borderColor:'white', marginBottom:"15px", borderRadius:"4px", marginRight:'5px'}} type='text'></Input>
+            <Input readOnly onChange={(e)=>{handlePrecio(e)}} value={postInput.precio===0?receiptById?.precio + " " + receiptById.moneda :postInput.precio + " " +receiptById.moneda} placeholder='Precio que pago' sx={{ width:'100%', border:1, borderColor:'white', marginBottom:"15px", borderRadius:"4px", marginRight:'5px'}} type='text' name='precio'></Input>
+            <Input readOnly onChange={(e)=>{handleLink(e)}} value={postInput.linksesion===''?receiptById?.linksesion:postInput.linksesion} placeholder='Link de la sesion' sx={{ width:'100%', border:1, borderColor:'white', marginBottom:"15px", borderRadius:"4px", marginRight:'5px'}} type='text' name='precio'></Input>
             
             </Card>
         </Grid>

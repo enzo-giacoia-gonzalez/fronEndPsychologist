@@ -2,19 +2,19 @@ import { FC,useEffect,useReducer } from 'react';
 import { useNavigate, useSearchParams, createSearchParams } from 'react-router-dom';
 import { SearchContext } from './SearchContext';
 import { searchReducer } from './searchReducer';
-import { userResponseEmail } from '../../Interfaces/users';
+import {user, userByMail, userResponseEmail, userResponseSearch } from '../../Interfaces/users';
 import apiInstance from '../../interceptors/interceptor';
 import Swal from 'sweetalert2';
 
 export interface Searchstate {
-    user: Array<[]>
-    userByMail: userResponseEmail[]
+    user: userResponseSearch[]
+    userByMail: userResponseEmail
    
 }
 
 const Search_INITIAL_STATE:Searchstate = {
-    user:[],
-    userByMail: []
+    user:[user],
+    userByMail: userByMail
 }
 
 interface Props{
@@ -119,10 +119,7 @@ const [searchParams] = useSearchParams()
                     },
                 })
     
-                localStorage.removeItem("token")
-                localStorage.removeItem("rol")
-                localStorage.removeItem("usuario")
-                location.replace('/login')
+                
                 }
               });
 

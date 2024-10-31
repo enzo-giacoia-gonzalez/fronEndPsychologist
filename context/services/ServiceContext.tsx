@@ -1,15 +1,15 @@
 import { createContext } from 'react';
-import { shiftResponseAll, shiftResponseById, userResponse, userResponseAll, userResponseShift } from '../../Interfaces/users';
+import { shiftResponseAll, shiftResponseById,  userResponseAll, userResponseByEmail, userResponseById, userResponseShift } from '../../Interfaces/users';
 
 
 interface contextProps {
     user:userResponseAll[]
     userWithShift:userResponseShift[]
-    userById:userResponse[]
-    userByMail:userResponse[]
-    shiftById: shiftResponseById[]
+    userById:userResponseById
+    userByMail:userResponseByEmail
+    shiftById: shiftResponseById
     shiftAll:shiftResponseAll[]
-    dataShift:shiftResponseById[]
+    dataShift:shiftResponseById
     searchUser: () => Promise<void>
     searchUserShifts: () => Promise<void>
     getResults: (searchinput?: string, searchinputcategoria?: string) => Promise<void>
@@ -18,12 +18,9 @@ interface contextProps {
     getUserById: (id: string) => Promise<boolean>
     getShiftById: (shiftId: string) => Promise<void>
     getShift: () => Promise<void>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    addService: (titulo: string, fileImg: string, fechayhora: string, linksesion: string, precio: string, moneda:string, usuario: string) => Promise<boolean>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    putService: (titulo: string, fileImg: any, fechayhora: string, linksesion: string, precio: string, pago:string, moneda:string, usuario: string, turnoId: string) => Promise<boolean>
+    addService: (titulo: string, fileImg: string, fechayhora: string, linksesion: string, precio: number, moneda:string, usuario: string) => Promise<void>
+    putService: (titulo: string, fileImg: string, fechayhora: string, linksesion: string, precio: number, pago:string, moneda:string, usuario: string, turnoId: string) => Promise<boolean>
     deleteService: (turnoId: string) => Promise<boolean>
-   
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    
 }
 export const ServiceContext = createContext({} as contextProps);

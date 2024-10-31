@@ -1,23 +1,19 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import { ServiceContext } from '../../context/services';
 import React from 'react';
 import { ReceiptContext } from '../../context/receipts';
 import { Grid, Card, Typography, Button, Input, Box, FormControl, MenuItem, Select, InputLabel, SelectChangeEvent, styled } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { receiptResponse, receiptResponseById } from '../../Interfaces/users';
-
-
-interface props {
-  comprobanteId: [
-    _id:string
-  ]
-}
 
 
 
-const PayItemPutService:FC<props> = ({_id}) => {
 
-  const { getResultsShift, userWithShift, getShiftById, shiftById, dataShift, getResults, getUserByMail, getUserById, userByMail, userById, user, putService, deleteService } = useContext(ServiceContext)
+
+
+
+const PayItemPutService = () => {
+
+  const { getResultsShift, userWithShift, getShiftById, shiftById, dataShift, getResults, getUserByMail, getUserById, userByMail, userById, user, putService } = useContext(ServiceContext)
 
   const { addReceipt, putReceipt, getReceipts, receiptAll } = useContext(ReceiptContext)
 
@@ -25,7 +21,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
 
   const [searchInputUser, setSearchInputUser] = useState({ categoriaUser: '', searchUser: '' })
 
-  const [postInput, setPostInput] = useState({ titulo: undefined, fileImg: '', fechayhora: undefined, linksesion: undefined, precio: undefined, pago: "", moneda: "", usuario: "", idUsuario: undefined })
+  const [postInput, setPostInput] = useState({ titulo: '', fileImg: '', fechayhora: '', linksesion: '', precio: 0, pago: "", moneda: "", usuario: "", idUsuario: '' })
 
 
   console.log(shiftById?._id)
@@ -35,12 +31,12 @@ const PayItemPutService:FC<props> = ({_id}) => {
     setPostInput({
       ...postInput,
       usuario: "",
-      idUsuario: undefined,
-      linksesion: undefined,
-      precio: undefined,
+      idUsuario: "",
+      linksesion: '',
+      precio: 0,
       pago: "",
       moneda: "",
-      fechayhora: undefined,
+      fechayhora: '',
 
     })
     getUserById(shiftById?.usuario)
@@ -52,7 +48,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
   }, [shiftById])
 
 
-  if (postInput.linksesion === undefined || postInput.precio === undefined || postInput.titulo === undefined || postInput.fechayhora === undefined || postInput.pago === "" || postInput.moneda === "") {
+  if ( postInput.fechayhora === '' || postInput.pago === "" || postInput.moneda === "") {
     postInput.linksesion = shiftById?.linksesion
     postInput.precio = shiftById?.precio
     postInput.pago = shiftById?.pago
@@ -69,14 +65,14 @@ const PayItemPutService:FC<props> = ({_id}) => {
     const shiftId = e.target.value
     setPostInput({
       ...postInput,
-      titulo: undefined,
+      titulo: '',
     })
     getShiftById(shiftId)
   }
 
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSearch = (e: any) => {
+  
+  const handleSearch = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setSearchInput({
       ...searchInput,
       search: e.target.value,
@@ -91,6 +87,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
       titulo: e.target.value
     })
 
+    
   }
 
 
@@ -119,10 +116,11 @@ const PayItemPutService:FC<props> = ({_id}) => {
 
 
 
+
   const handlePrecio = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setPostInput({
       ...postInput,
-      precio: e.target.value
+      precio: e.target.value as unknown as number
     })
   }
 
@@ -134,7 +132,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
     })
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  
 
 
   const handleAprobado = (event: SelectChangeEvent) => {
@@ -146,7 +144,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
 
 
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const handleSearchUsuario = (e: SelectChangeEvent) => {
 
     console.log(e.target.value)
@@ -155,13 +153,13 @@ const PayItemPutService:FC<props> = ({_id}) => {
       ...postInput,
       usuario: e.target.value
     })
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
     getUserByMail(e.target.value)
   }
 
 
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   const handleSearchUser = (e: any) => {
+   
+   const handleSearchUser = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setSearchInputUser({
       ...searchInputUser,
       searchUser: e.target.value,
@@ -172,10 +170,8 @@ const PayItemPutService:FC<props> = ({_id}) => {
 
   const comprobanteId = receiptAll.filter((comprobante)=>comprobante.usuario===shiftById?.usuario )
 
-  console.log(comprobanteId)
-
-
-
+  
+ 
 
 
   useEffect(() => {
@@ -232,7 +228,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
             displayEmpty
           >
             {userWithShift.map((users, index) => {
-              return (<MenuItem key={index} value={users?._id}>{users?.titulo}</MenuItem>)
+              return (<MenuItem key={index} value={users?._id}>{users?.titulo + " " + users?.fechayhora}</MenuItem>)
             })}
           </Select>
         </FormControl>
@@ -241,7 +237,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
         <Input onChange={(e) => { handleTime(e) }} placeholder='Hora y dia de la sesion' value={postInput.fechayhora === undefined ? shiftById?.fechayhora : postInput.fechayhora} name='fechayhora' type='datetime-local'></Input>
         <Button onChange={(e) => { handleImg(e) }} sx={{ bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' }, width: '100%', border: 1, borderColor: 'white', marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>Upload file <VisuallyHiddenInput type="file" /></Button>
 
-        <Input onChange={(e) => { handleSesion(e) }} placeholder='Link de la sesion' value={postInput.linksesion === undefined ? shiftById?.linksesion : postInput.linksesion} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} name='linksesion' type='text'></Input>
+        <Input onChange={(e) => { handleSesion(e) }} placeholder='Link de la sesion' value={postInput.linksesion === undefined ? shiftById?.linksesion : postInput.linksesion} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px', marginTop: "15px" }} name='linksesion' type='text'></Input>
         {shiftById?.pago === "RECHAZADO" ? <Input onChange={(e) => { handlePrecio(e) }} placeholder='Precio de la sesion' value={postInput.precio === undefined ? shiftById?.precio : postInput.precio} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} name='precio' type='text'></Input> : <Input onChange={(e) => { handlePrecio(e) }} placeholder='Precio de la sesion' value={postInput.precio === undefined ? shiftById?.precio : postInput.precio} sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} readOnly name='precio' type='text'></Input>}
 
 
@@ -249,7 +245,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
 
         <FormControl fullWidth sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }}>
           <InputLabel id="demo-simple-select-label">{postInput.moneda}</InputLabel>
-          {shiftById?.pago === "RECHAZADO" ? <Select
+          {shiftById?.pago === "RECHAZADO" && postInput.pago==="RECHAZADO"? <Select
 
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -277,7 +273,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
 
         <FormControl sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} >
           <InputLabel id="demo-simple-select-labelll">{postInput.pago}</InputLabel>
-          {shiftById?.pago === "RECHAZADO" && shiftById?.moneda === "ARG" ? <Select
+          {shiftById?.pago === "RECHAZADO" && shiftById?.moneda != "USD"  && postInput.moneda!="USD" ? <Select
             labelId="demo-simple-select-labelll"
             id="demo-simple-selecttt"
             value={postInput.pago}
@@ -326,7 +322,7 @@ const PayItemPutService:FC<props> = ({_id}) => {
 
 
             {user.map((users, index) => {
-              return (<MenuItem key={index} value={users?.correo}>{users?.nombre}</MenuItem>)
+              return (<MenuItem key={index} value={users?.correo}>{users?.nombre + " "+ users?.apellido + " " + users?.dni}</MenuItem>)
             })}
 
 

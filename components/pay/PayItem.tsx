@@ -23,9 +23,10 @@ const PayItem = () => {
   
   console.log(shiftFind)
 
-  console.log(shiftFind[0]?.img)
+
 
   return (
+    <Box sx={{paddingBottom:'70px'}}>
    <ListItem>
     <Card sx={{ maxWidth: 445 }}>
     <CardMedia
@@ -33,21 +34,22 @@ const PayItem = () => {
       height="140"
       image="../../img/sanamente.png"
     />
-    <CardContent>
+    <CardContent sx={{flexDirection:'column', justifyItems:'center'}}>
       <Typography gutterBottom variant="h5" component="div">
         {shiftFind[0]?.titulo}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-      {shiftFind[0]?.precio}
+      {shiftFind[0]?.precio + " " + shiftFind[0]?.moneda}
       </Typography>
     </CardContent>
-    <CardActions>
-      <Box justifyContent="center" display="flex" flexDirection="column" alignItems="center">
-      {shiftFind[0].moneda==="USD"?<ButtonPaypal shiftFind={shiftFind}/>: <Button href='PaySessionCv' sx={{color:'black', ":hover": { bgcolor: "#BAA0C8", color:'white' }}} size="small">Pagar via transferencia bancaria</Button>}
+    <CardActions sx={{width:'100%'}}>
+      <Box justifyContent="center" display="flex" flexDirection="column" alignItems="center" width={"100%"}>
+      {shiftFind[0]?.moneda==="USD"?<ButtonPaypal shiftFind={shiftFind}/>: <Button href='/PaySessionCv' sx={{color:'black', ":hover": { bgcolor: "#BAA0C8", color:'white' }}} size="large">Pagar via transferencia bancaria</Button>}
       </Box>
     </CardActions>
   </Card>
    </ListItem>
+   </Box>
   )
 }
 

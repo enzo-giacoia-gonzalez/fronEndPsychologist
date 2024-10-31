@@ -20,8 +20,9 @@ const HistorialPaymentAdmin = () => {
 
   return (
     <Grid height="100vh">
-        <Typography textAlign="center" marginX={2} paddingBottom={4} variant="h5">Lista de los pacientes</Typography>
-        <Grid container xs={12}  direction={{xs:'column', md:'row'}} justifyContent="center" alignItems="center">
+         {receiptAll.length===0?<Typography sx={{borderBottom:1, width:'100%', borderColor:'#6F2279', paddingX:2}} textAlign="center" paddingBottom={4} variant="h5">No hay compras realizadas hasta el</Typography>:
+        <Typography textAlign="center" sx={{borderBottom:1, width:'100%', borderColor:'#6F2279'}} paddingBottom={4} variant="h5">Lista de mis compras</Typography>}
+        <Grid container xs={12} paddingTop={8} direction={{xs:'column', md:'row'}} justifyContent="center" alignItems="center">
        
         {receiptAll?.map((comprobantes, index)  => (
             <HistorialPaymentAdminItem key={index} comprobantes={comprobantes}></HistorialPaymentAdminItem>

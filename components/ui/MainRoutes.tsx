@@ -1,5 +1,5 @@
 
-import { Route, Routes} from 'react-router-dom'
+import { Navigate, Route, Routes} from 'react-router-dom'
 import Navbar from './Navbar';
 import Start from '../start/start';
 import SideMenu from './SideMenu';
@@ -35,8 +35,9 @@ import ResetPasswordParams from '../user/ResetPasswordParams';
 
 const MainRoutes = () => {
 
-  const usuarioId = localStorage.getItem("usuarioId")
-
+  
+  const rol = localStorage.getItem("rol")
+  const token = localStorage.getItem("token")
   
   
   
@@ -55,26 +56,25 @@ const MainRoutes = () => {
         <Routes>
             <Route path='/' element={<Start/>}/>
             <Route path='*' element={<Error404/>}/>
-            <Route path='/CourseProgram' element={<CourseProgram/>}/>
-            <Route path='/MyCourses' element={<MyCourses/>}/>
-            <Route path='/PsychologySessions' element={<PsychologySessions/>}/>
-            <Route path='/Login' element={<Login/>}/>
-            <Route path='/Register' element={<Register/>}/>
-            <Route path='/ForgetPassword' element={<ForgetPassword/>}/>
-            
-            <Route path='/resetpassword/:token' element={<ResetPasswordParams/>} />
-            <Route path='/UserList' element={<UserList/>}/>
-            <Route path='/Classes/AddVideos' element={<AddClasses/>}/>
-            <Route path='/Classes/ModifyClasses' element={<ModifyClasses/>}/>
-            <Route path='/Pay' element={<Pay/>}/>
-            <Route path='/PayItem' element={<PayItem/>}/>
-            <Route path='/HistorialPaymentAdmin' element={<HistorialPaymentAdmin/>}/>
-            <Route path='/HistorialPaymentUser' element={<HistorialPaymentUser/>}/>
-            <Route path='/PayItemService' element={<PayItemService/>}/>
-            <Route path='/PatientCalendar' element={<PatientCalendar/>}/>
+            <Route path='/CourseProgram' element={token && rol=="PATIENT_ROLE" || rol=="ADMIN_ROLE"?<CourseProgram/>:<Navigate to= "/"/>}/>
+            <Route path='/MyCourses' element={token && rol=="PATIENT_ROLE" || rol=="ADMIN_ROLE"?<MyCourses/>:<Navigate to= "/"/>}/> 
+            <Route path='/PsychologySessions' element={rol==="USER_ROLE" || rol==="PATIENT_ROLE" && token?<PsychologySessions/>:<Navigate to= "/"/>}/>
+            <Route path='/Login' element={!token?<Login/>:""}/>
+            <Route path='/Register' element={!token?<Register/>:""}/>
+            <Route path='/ForgetPassword' element={!token?<ForgetPassword/>:<Navigate to= "/"/>}/>
+            <Route path='/resetpassword/:token' element={!token?<ResetPasswordParams/>:""} />
+            <Route path='/UserList' element={rol==="ADMIN_ROLE" && token?<UserList/>:<Navigate to= "/"/>}/>
+            <Route path='/Classes/AddVideos' element={rol==="ADMIN_ROLE" && token?<AddClasses/>:<Navigate to= "/"/>}/>
+            <Route path='/Classes/ModifyClasses' element={rol==="ADMIN_ROLE" && token?<ModifyClasses/>:<Navigate to= "/"/>}/>
+            <Route path='/Pay' element={rol=="PATIENT_ROLE" || rol=="USER_ROLE" && token ?<Pay/>:<Navigate to= "/"/>}/>
+            <Route path='/PayItem' element={rol=="PATIENT_ROLE" || rol=="USER_ROLE" && token ?<PayItem/>:<Navigate to= "/"/>}/>
+            <Route path='/HistorialPaymentAdmin' element={rol==="ADMIN_ROLE" && token?<HistorialPaymentAdmin/>:<Navigate to= "/"/>}/>
+            <Route path='/HistorialPaymentUser' element={rol==="PATIENT_ROLE" || rol==="USER_ROLE" && token ?<HistorialPaymentUser/>:<Navigate to= "/"/>}/>
+            <Route path='/PayItemService' element={rol=="ADMIN_ROLE" && token?<PayItemService/>:<Navigate to= "/"/>}/>
+            <Route path='/PatientCalendar' element={rol=="ADMIN_ROLE" && token?<PatientCalendar/>:<Navigate to= "/"/>}/>
             <Route path='/MoreNotifications' element={<MoreNotifications/>}/>
-            <Route path='/ReceiptPayment' element={<ReceiptPayment/>}/>
-            <Route path='/PaySessionCv' element={<PaySessionCv/>}/>
+            <Route path='/ReceiptPayment' element={rol=="ADMIN_ROLE" && token?<ReceiptPayment/>:<Navigate to= "/"/>}/>
+            <Route path='/PaySessionCv' element={rol=="PATIENT_ROLE" || rol=="USER_ROLE" && token ?<PaySessionCv/>:<Navigate to= "/"/>}/>
         </Routes>
         <Footer></Footer>
     </div>

@@ -1,14 +1,14 @@
-import { shiftResponseAll, shiftResponseById, userResponse, userResponseAll, userResponseShift } from '../../Interfaces/users';
+import { shiftResponseAll, shiftResponseById, userResponseAll, userResponseByEmail, userResponseById, userResponseShift } from '../../Interfaces/users';
 import { Servicestate } from './index';
 
 type ServicestateActionType =
     | { type: 'findUser', payload: userResponseAll[]}
     | { type: 'findUserShift', payload: userResponseShift[] }
-    | { type: 'findUserById', payload: userResponse[] }
-    | { type: 'findUserByMail', payload: userResponse[] }
-    | { type: 'findShiftById', payload: shiftResponseById[] }
+    | { type: 'findUserById', payload: userResponseById }
+    | { type: 'findUserByMail', payload: userResponseByEmail }
+    | { type: 'findShiftById', payload: shiftResponseById }
     | { type: 'findShiftAll', payload: shiftResponseAll[] }
-    | { type: 'dataResult', payload: shiftResponseById[] }
+    | { type: 'dataResult', payload: shiftResponseById }
    
 
 export const serviceReducer = (state: Servicestate, action: ServicestateActionType): Servicestate => {

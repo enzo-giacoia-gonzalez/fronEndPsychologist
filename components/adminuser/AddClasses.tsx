@@ -54,7 +54,7 @@ const AddClasses = () => {
 
     <Grid container padding={28}>
       <Grid item xs display="flex" justifyContent="center" paddingX={5} alignItems="center" >
-        <Card sx={{p:2 , display:'flex' , flexDirection:'column' ,justifyContent:'center'}} >
+        <Card sx={{p:8 , display:'flex' , flexDirection:'column' ,justifyContent:'center'}} >
         <Typography sx={{marginBottom:1}}>Agregar archivos</Typography>
         <Input onChange={(e)=>handleTitle(e)} placeholder='Titulo del video' sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} name='title' type='text'></Input>
         <Button onChange={(e)=>{handleImg(e)}} sx={{bgcolor: '#BAA0C8', color: 'black', ":hover": { bgcolor: '#6C2273', color: 'white' }, width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", borderRadius: "4px", marginRight: '5px' }} component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>Subir imagen <VisuallyHiddenInput type="file" /></Button>

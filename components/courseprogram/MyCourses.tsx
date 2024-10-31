@@ -1,14 +1,31 @@
 import { Button, Card, CardMedia, Grid, Typography } from "@mui/material"
 import img from "../../img/sanamente.png"
+import { useContext, useEffect } from "react"
+import { ReceiptContext } from "../../context/receipts"
+
 
 
 const MyCourses = () => {
+
+    const usuarioId = localStorage.getItem("usuario")
+
+    const {getUserAll, allUsers} = useContext(ReceiptContext)
+
+    useEffect(() => {
+        getUserAll()
+    }, [])
+    
+    console.log(allUsers)
+
+    const findUser = allUsers.filter((user)=>user.uid==usuarioId)
+
+    console.log(findUser)
   return (
     <Grid container py={5} height="100vh">
         <Grid container bgcolor="#F5F5F5" py={7} maxHeight="180px">
         <Grid item xs={12} display="flex" sx={{paddingLeft:{xs:2,sm:20}}}>
             <Typography marginRight={1} variant="h4">Hola de nuevo</Typography>
-            <Typography color="#6F2279" variant="h4">Enzo</Typography>
+            <Typography color="#6F2279" variant="h4">{findUser[0]?.nombre}</Typography>
         </Grid>
         </Grid>
         <Grid container py={9} px={2}>

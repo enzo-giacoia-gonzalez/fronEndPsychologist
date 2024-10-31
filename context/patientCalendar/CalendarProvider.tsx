@@ -3,7 +3,7 @@ import { FC,useEffect,useReducer } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { CalendarContext } from './CalendarContext';
 import { calendarReducer } from './calendarReducer';
-import { receiptResponse, receiptResponseById, userResponse, userResponseAll, userResponseReceipt } from '../../Interfaces/users';
+import { receiptById, receiptResponse, receiptResponseById, userByMail, userResponseAll, userResponseByEmail, userResponseCalendar, userResponseReceipt } from '../../Interfaces/users';
 import apiInstance from '../../interceptors/interceptor';
 
 
@@ -14,20 +14,20 @@ import apiInstance from '../../interceptors/interceptor';
 export interface Calendarstate {
     user: Array<[]>
     allUsers: userResponseAll[]
-    userByMail: userResponse[]
-    userById: userResponse[]
+    userByMail: userResponseByEmail
+    userById: userResponseCalendar
     userWithReceipt: userResponseReceipt[]
-    receiptById: receiptResponseById[]
+    receiptById: receiptResponseById
     receiptAll: receiptResponse[]
 }
 
 const Calendar_INITIAL_STATE:Calendarstate = {
     user: [],
     allUsers: [],
-    userByMail: [],
-    userById: [],
+    userByMail: userByMail,
+    userById: userResponseCalendar,
     userWithReceipt: [],
-    receiptById: [],
+    receiptById: receiptById,
     receiptAll: []
 }
 

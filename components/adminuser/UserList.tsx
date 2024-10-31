@@ -1,4 +1,4 @@
-import { Button, Card, FormControl, Grid, Input, MenuItem, Select, Typography, Box } from '@mui/material';
+import { Button, Card, FormControl, Grid, Input, MenuItem, Select, Typography, Box, SelectChangeEvent } from '@mui/material';
 import { UiContext } from '../../context/ui'
 import { useContext, useState } from 'react'
 import UserAdminModal from '../ui/UserAdminModal';
@@ -14,8 +14,11 @@ import { SearchContext } from '../../context/searchUser';
 
 const UserList = () => {
 
+    
+
     const { user, getResults, getUserByMail } = useContext(SearchContext)
 
+    
     const { toogleModalUser } = useContext(UiContext)
 
 
@@ -28,10 +31,11 @@ const UserList = () => {
         });
     };
 
-    const handleUsuario = (e:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        getUserByMail(e.target.value)
+    const handleUsuario = (e: SelectChangeEvent<unknown>) => {
+        getUserByMail(e.target.value as unknown as string)
     }
 
+  
     
 
     return (
@@ -57,7 +61,7 @@ const UserList = () => {
                                 displayEmpty
                             >
                                 {user.map((users, index) => {
-                                    return (<MenuItem onClick={()=>{toogleModalUser(true)}} key={index} value={users?.correo}>{users?.nombre}</MenuItem>)
+                                    return (<MenuItem onClick={()=>{toogleModalUser(true)}} key={index} value={users?.correo}>{users?.nombre + " " + users?.apellido+ " " + users.dni}</MenuItem>)
                                 })}
                             </Select>
                         </FormControl>

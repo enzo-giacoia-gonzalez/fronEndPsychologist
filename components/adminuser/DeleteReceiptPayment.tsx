@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Grid, Card, Typography, Box, Button, FormControl, Select, MenuItem, Input} from '@mui/material';
+import { Grid, Card, Typography, Box, Button, FormControl, Select, MenuItem, Input, SelectChangeEvent} from '@mui/material';
 import { ReceiptContext } from '../../context/receipts';
 
 
@@ -31,9 +31,9 @@ const DeleteReceiptPayment = () => {
   };
   
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleShift= (e: React.ChangeEvent<{ value: unknown }>) => {
-    const receiptId = e.target.value as string
+
+  const handleShift= (e: SelectChangeEvent<unknown>) => {
+    const receiptId = e.target.value as unknown as string
     getReceiptById(receiptId)
 }
 
@@ -68,7 +68,7 @@ const DeleteReceiptPayment = () => {
             displayEmpty
           >
             {userWithReceipt.map((users, index) => {
-              return (<MenuItem key={index} value={users?._id}>{users?.titulo}</MenuItem>)
+              return (<MenuItem key={index} value={users?._id}>{users?.titulo + " " + users?.fechayhora}</MenuItem>)
             })}
           </Select>
         </FormControl>

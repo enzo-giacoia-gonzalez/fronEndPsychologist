@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react'
-import { Button, Card, Grid, Input, Typography } from '@mui/material'
+import { Button, Card, Grid, Typography } from '@mui/material'
 import { AuthContext } from '../../context/auth'
-
+import Input from '@mui/material/Input';
+ 
 
 const ForgetPassword = () => {
 
@@ -32,8 +33,8 @@ const ForgetPassword = () => {
                     <Card sx={{maxWidth:{xs:'80%', sm:'50'}, width:'450px', height:{xs:'350px', sm:'350px'}, borderRadius:2 , boxShadow:1, paddingX:3, paddingY:1}}>
                         
                         <Typography variant="h5" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }}>Recuperar contraseña</Typography>
-                        <Input onChange={(e)=>{handleCorreo(e)}} placeholder="Correo" type="text" name="correo" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth>Correo</Input>
-                        <Input onChange={(e)=>{handlePalabraClave(e)}} placeholder="Palabra clave" type="password" name="password" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth>Palabra clave</Input>
+                        <Input onChange={(e)=>{handleCorreo(e)}} placeholder="Correo" type="text" name="correo" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
+                        <Input onChange={(e)=>{handlePalabraClave(e)}} placeholder="Palabra clave" type="password" name="recordartucontrasena" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
                         <Button onClick={()=>{SubmitCorreo(forgetPasswordInput.correo, forgetPasswordInput.recordartucontrasena)}} fullWidth sx={{marginTop:'18px', marginBottom:'18px',paddingY:2 , bgcolor:'#BAA0C8', color:'black', ":hover":{bgcolor:'#6C2273', color:'white'}}} type="submit">Recuperar contraseña</Button>
                     </Card>
                 </Grid>

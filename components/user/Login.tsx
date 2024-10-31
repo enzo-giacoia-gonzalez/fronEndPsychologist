@@ -41,8 +41,8 @@ const Login = () => {
                     <Card sx={{maxWidth:{xs:'80%', sm:'50'}, width:'450px', height:{xs:'400px', sm:'400px'}, borderRadius:2 , boxShadow:1, paddingX:3, paddingY:1}}>
                         
                         <Typography variant="h5" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }}>Iniciar Sesion</Typography>
-                        <Input onChange={(e)=>{handleCorreo(e)}} placeholder="Correo" type="text" name="correo" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth>Correo</Input>
-                        <Input onChange={(e)=>{handlePassword(e)}} placeholder="Contraseña" type="password" name="password" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth>Contraseña</Input>
+                        <Input onChange={(e)=>{handleCorreo(e)}} placeholder="Correo" type="text" name="correo" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
+                        <Input onChange={(e)=>{handlePassword(e)}} placeholder="Contraseña" type="password" name="password" sx={{ width: '100%', border: 1, borderColor: 'white', marginBottom: "15px", marginTop: "15px", borderRadius: "4px", marginRight: '5px' }} fullWidth></Input>
                         <Button onClick={()=>{loginUser(handleInput.correo, handleInput.password)}} fullWidth sx={{marginTop:'18px', marginBottom:'18px',paddingY:2 , bgcolor:'#BAA0C8', color:'black', ":hover":{bgcolor:'#6C2273', color:'white'}}} type="submit">Ingresar</Button>
                         <Box marginBottom="18px"><Link underline="hover" color="#6C2273" href={"/ForgetPassword"}>Recuperar contraseña</Link></Box>
                         <Link underline="hover" color="#6C2273" href={"/register"}>Si quieres registrarte has click</Link>

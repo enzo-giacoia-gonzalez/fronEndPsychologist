@@ -1,14 +1,14 @@
 import { createContext } from 'react';
-import { receiptResponse, receiptResponseById, userResponse, userResponseAll, userResponseReceipt } from '../../Interfaces/users';
+import { receiptResponse, receiptResponseById,  userResponseAll, userResponseByEmail, userResponseCalendar, userResponseReceipt } from '../../Interfaces/users';
 
 
 interface contextProps {
     user:  Array<[]>
     allUsers: userResponseAll[]
-    userByMail: userResponse[]
-    userById: userResponse[]  
+    userByMail: userResponseByEmail
+    userById: userResponseCalendar
     userWithReceipt:userResponseReceipt[]
-    receiptById:receiptResponseById[]
+    receiptById:receiptResponseById
     receiptAll:receiptResponse[]
     searchUser: () => Promise<void>,
     searchUserReceipt: () => Promise<void>

@@ -3,6 +3,7 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 import { shiftResponseAll } from '../../Interfaces/users'
 import { ServiceContext } from '../../context/services'
 import { ReceiptContext } from '../../context/receipts'
+import Swal from 'sweetalert2'
 
 interface Props {
     shiftFind:shiftResponseAll[]
@@ -10,7 +11,7 @@ interface Props {
 
 const ButtonPaypal:FC<Props> = ({shiftFind}) => {
 
- 
+ console.log(shiftFind)
   
 
 
@@ -32,9 +33,10 @@ const ButtonPaypal:FC<Props> = ({shiftFind}) => {
 
   if (paidFor) {
       addReceipt(shiftFind[0]?.titulo,shiftFind[0]?.fechayhora, shiftFind[0]?.linksesion, shiftFind[0]?.precio,"APROBADO",shiftFind[0]?.moneda, shiftFind[0]?.usuario)
-      alert('Gracias por su compra revise su email')
       putService(shiftFind[0]?.titulo,shiftFind[0]?.img, shiftFind[0]?.fechayhora, shiftFind[0]?.linksesion,shiftFind[0]?.precio, "APROBADO", shiftFind[0]?.moneda, shiftFind[0]?.usuario, shiftFind[0]?._id)
+      Swal.fire({position:"top-right",icon:"success",title:"Compra exitosa",showConfirmButton:false,timer:3000})
       location.replace('/PsychologySessions')
+      
    
   }
 
@@ -42,7 +44,7 @@ const ButtonPaypal:FC<Props> = ({shiftFind}) => {
 
 
   if (error) {
-    alert(error)
+    Swal.fire({position:"top-right",icon:"error",title:"Error al realizar la compra",showConfirmButton:false,timer:3000})
   }
 
   return (
@@ -50,6 +52,7 @@ const ButtonPaypal:FC<Props> = ({shiftFind}) => {
     "clientId":import.meta.env.VITE_PAYMENT_CLIENT_ID
   }}>
     <PayPalButtons
+    style={{layout:'vertical',color:'white',shape:'pill',label:'pay',height:40, disableMaxWidth:true }}
     onClick={(_data,actions)=>{
       const hasAlreadyBoughtCourse = false 
       if (hasAlreadyBoughtCourse){
@@ -66,7 +69,7 @@ const ButtonPaypal:FC<Props> = ({shiftFind}) => {
             description: shiftFind[0]?.titulo,
             amount: {
               currency_code: 'USD',
-              value: shiftFind[0]?.precio
+              value: shiftFind[0]?.precio as unknown as string
             },
           },
         ],

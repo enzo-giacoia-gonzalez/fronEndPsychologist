@@ -3,9 +3,9 @@ import { Videostate } from './index';
 
 type VideostateActionType =
     | { type: 'Videos - get', payload: responseVideo[]}
-    | { type: 'OneVideo - get', payload: responseVideo[] }
+    | { type: 'OneVideo - get', payload: responseVideo }
     | { type: 'Videostate - remove', payload: boolean }
-    | { type: 'Videostate - Add', payload: addVideo[] }
+    | { type: 'Videostate - Add', payload: addVideo }
     | { type: 'Img - Add', payload: string }
     | { type: 'Video - Add', payload: string }
 

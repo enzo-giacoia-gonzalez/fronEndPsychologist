@@ -27,7 +27,7 @@ const CourseProgram = () => {
   
     
  
-    const { ShowBorderOn, toogleShowBorderOn, toogleModalComments, showCourseProgram ,ShowVideoOpen, ShowVideoOpenExchange, ShowVideoOpenSrc } = useContext(UiContext)
+    const { ShowBorderOn, toogleShowBorderOn, showCourseProgram ,ShowVideoOpen, ShowVideoOpenExchange, ShowVideoOpenSrc } = useContext(UiContext)
 
 
     // eslint-disable-next-line no-global-assign
@@ -47,9 +47,9 @@ const CourseProgram = () => {
         image={img}
     />
     <Typography mb="10px" variant='h4'>On Off</Typography>
-    <Typography mb="10px">50% completado</Typography>
-    <Typography mb="10px" textAlign="justify"><Button sx={{ bgcolor: '#C1A6CF', color: 'black', ":hover": { bgcolor: "#6F2279", color: 'white' }, width: { xs: '100%', sm: '100%', md: '100%', lg: 'auto' } }}>Continua con los videos</Button></Typography>
-    <Typography variant='subtitle1'><Link color="#6F2279" underline='always' component="button" onClick={()=>{toogleModalComments(true)}}>¿Que tal te resultan los videos?</Link></Typography>
+   
+  
+    
 
 </Grid>
 

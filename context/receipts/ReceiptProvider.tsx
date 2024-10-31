@@ -1,7 +1,7 @@
 import { FC, useReducer, useEffect } from 'react';
 import { ReceiptContext } from './ReceiptContext';
 import { receiptReducer } from './receiptReducer';
-import { receiptResponse, receiptResponseById, userResponse, userResponseAll, userResponseReceipt } from '../../Interfaces/users';
+import { receiptById, receiptResponse, receiptResponseById, userResponse, userResponseAll, userResponseReceipt } from '../../Interfaces/users';
 import { useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
 import apiInstance from '../../interceptors/interceptor';
 import Swal from 'sweetalert2';
@@ -12,7 +12,7 @@ export interface Receiptstate {
     userByMail: userResponse[]
     userById: userResponse[]
     userWithReceipt: userResponseReceipt[]
-    receiptById: receiptResponseById[]
+    receiptById: receiptResponseById
     receiptAll: receiptResponse[]
 }
 
@@ -22,7 +22,7 @@ const Receipt_INITIAL_STATE: Receiptstate = {
     userByMail: [],
     userById: [],
     userWithReceipt: [],
-    receiptById: [],
+    receiptById: receiptById,
     receiptAll: []
 }
 
@@ -225,7 +225,7 @@ export const ReceiptProvider: FC<Props> = ({ children }) => {
 
 
 
-    const addReceipt = async (titulo: string, fechayhora: string, linksesion: string, precio: string, pago: string, moneda: string, usuario: string): Promise<boolean> => {
+    const addReceipt = async (titulo: string, fechayhora: string, linksesion: string, precio: number, pago: string, moneda: string, usuario: string): Promise<boolean> => {
         try {
 
             await apiInstance.post(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_CREAR_COMPROBANTES_APP, { titulo, fechayhora, linksesion, precio, pago, moneda, usuario },
@@ -239,6 +239,7 @@ export const ReceiptProvider: FC<Props> = ({ children }) => {
 
             return true
         } catch (error) {
+            console.log(error)
             return false
         }
     }

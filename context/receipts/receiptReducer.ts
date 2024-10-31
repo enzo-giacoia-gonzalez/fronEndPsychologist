@@ -7,7 +7,7 @@ type ReceiptstateActionType =
     | { type: 'findUserByMail', payload: userResponse[] }
     | { type: 'findUserById', payload: userResponse[] }
     | { type: 'findUserReceipt', payload: userResponseReceipt[] }
-    | { type: 'findReceiptById', payload: receiptResponseById[] }
+    | { type: 'findReceiptById', payload: receiptResponseById }
     | { type: 'findReceipt', payload: receiptResponse[] }
 
 

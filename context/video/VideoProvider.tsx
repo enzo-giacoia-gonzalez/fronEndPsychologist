@@ -2,27 +2,27 @@
 import { FC, useEffect, useReducer } from 'react';
 import { VideoContext } from './VideoContext';
 import { videoReducer } from './videoReducer';
-import { addVideo, responseVideo } from '../../Interfaces/video';
+import { addFiles, addVideo, responseVideo, videoForEdit } from '../../Interfaces/video';
 import apiInstance from '../../interceptors/interceptor';
 import Swal from 'sweetalert2';
 
 
 
 export interface Videostate {
-  addFiles: addVideo[]
+  addFiles: addVideo
   files: string
-  videoForEdit: responseVideo[]
+  videoForEdit: responseVideo
   responseVideos: responseVideo[]
-  responseVideo: responseVideo[]
+  responseVideo: responseVideo
   removeFile: boolean
 }
 
 const Video_INITIAL_STATE: Videostate = {
-  addFiles: [],
+  addFiles: addFiles,
   files: '',
-  videoForEdit: [],
+  videoForEdit: videoForEdit,
   responseVideos: [],
-  responseVideo: [],
+  responseVideo: responseVideo,
   removeFile: false,
 }
 
@@ -30,10 +30,9 @@ interface Props {
   children: JSX.Element | JSX.Element[]
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let img: any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let video: any
+
+let img: string
+let video: string
 let usuario = localStorage.getItem("usuario")
 let token = localStorage.getItem("token")
 
@@ -56,8 +55,8 @@ export const VideoProvider: FC<Props> = ({ children }) => {
     dispatch({ type: 'Videos - get', payload: data.videos })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const addVideo = async (nombre: string, fileimg?: any, filevideo?: any): Promise<boolean> => {
+  
+  const addVideo = async (nombre: string, fileimg?: string, filevideo?: string): Promise<void> => {
     try {
 
       if (filevideo) {
@@ -101,10 +100,10 @@ export const VideoProvider: FC<Props> = ({ children }) => {
         location.replace("/CourseProgram")
       }
 
-      return true
+      
     } catch (error) {
       console.log(error)
-      return false
+       error
     }
   }
 
@@ -201,8 +200,7 @@ export const VideoProvider: FC<Props> = ({ children }) => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const editVideo = async (nombre: string, fileimg?: any, filevideo?: any): Promise<boolean> => {
+  const editVideo = async (nombre: string, fileimg?: string, filevideo?: string): Promise<void> => {
     try {
       const videoId = localStorage.getItem("videoId")
 
@@ -240,7 +238,7 @@ export const VideoProvider: FC<Props> = ({ children }) => {
         })
         location.replace("/CourseProgram")
 
-        return true
+       
       }
 
       if (nombre && fileimg) {
@@ -251,16 +249,18 @@ export const VideoProvider: FC<Props> = ({ children }) => {
           },
         })
         location.replace("/CourseProgram")
+        
       }
 
       if (nombre && filevideo) {
 
-        await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId, { nombre, img }, {
+        await apiInstance.put(import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_AGREGAR_VIDEOS_APP + "/" + videoId, { nombre, video }, {
           headers: {
             "x-token": token,
           },
         })
         location.replace("/CourseProgram")
+        
       }
 
 
@@ -278,11 +278,11 @@ export const VideoProvider: FC<Props> = ({ children }) => {
 
 
 
-      return true
+      
 
     } catch (error) {
-      console.log(error)
-      return false
+      error
+      
     }
 
   }

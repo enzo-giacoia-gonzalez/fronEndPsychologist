@@ -8,7 +8,7 @@ interface contextProps {
     userByMail: userResponse[]
     userById: userResponse[]  
     userWithReceipt:userResponseReceipt[]
-    receiptById:receiptResponseById[]
+    receiptById:receiptResponseById
     receiptAll:receiptResponse[]
     searchUser: () => Promise<void>,
     searchUserReceipt: () => Promise<void>
@@ -19,7 +19,7 @@ interface contextProps {
     getUserByMail: (correo: string) => Promise<void>
     getReceipts: () => Promise<void>
     getReceiptById: (receiptId: string) => Promise<void>
-    addReceipt: (titulo: string, fechayhora: string, linksesion:string, precio: string, aprobado: string, moneda:string, usuario: string) => Promise<boolean>
+    addReceipt: (titulo: string, fechayhora: string, linksesion:string, precio: number, aprobado: string, moneda:string, usuario: string) => Promise<boolean>
     putReceipt: (titulo: string, fechayhora: string, precio: number, pago: string,moneda:string, usuario: string, comprobanteId: string) => Promise<boolean>
     deleteReceipt: (receiptId: string) => Promise<boolean>
 }

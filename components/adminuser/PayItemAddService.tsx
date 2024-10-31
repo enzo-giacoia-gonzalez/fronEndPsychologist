@@ -12,7 +12,7 @@ const PayItemAddService = () => {
 
   const [searchInput, setSearchInput] = useState({ categoria: '', search: '' })
 
-  const [postInput, setPostInput] = useState({ titulo: '', fileImg: '', fechayhora: '', linksesion: '', precio: '', moneda:'', usuario: '' })
+  const [postInput, setPostInput] = useState({ titulo: '', fileImg: '', fechayhora: '', linksesion: '', precio: 0, moneda:'', usuario: '' })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSearch = (e: any) => {
@@ -54,17 +54,20 @@ const PayItemAddService = () => {
   const handlePagoSesion = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setPostInput({
       ...postInput,
-      precio: e.target.value,
+      precio: e.target.value as unknown as number,
     });
   }
 
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleUsuario = (e: any) => {
-    getUserByMail(e.target.value)
+  
+  const handleUsuario = (e: SelectChangeEvent<unknown>) => {
+
+    const email = e.target.value as unknown as string 
+    getUserByMail (email)
   }
 
-  postInput.usuario = userByMail.uid
+
+  postInput.usuario = userByMail?.uid
   console.log(postInput.usuario)
 
 
@@ -137,7 +140,7 @@ const PayItemAddService = () => {
             displayEmpty
           >
             {user.map((users, index) => {
-              return (<MenuItem key={index} value={users?.correo}>{users?.nombre}</MenuItem>)
+              return (<MenuItem key={index} value={users?.correo}>{users?.nombre + " " + users?.apellido + " " + users?.dni}</MenuItem>)
             })}
           </Select>
         </FormControl>

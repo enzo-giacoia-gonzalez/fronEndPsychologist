@@ -3,21 +3,132 @@ export interface userResponse {
         rol:string,
         estado:boolean,
         nombre:string,
+        apellido:string,
+        dni:string,
         correo:string,
         _id:string,
         uid:string,
     ],
 }
 
+export interface userResponseCalendar {
+        rol:string,
+        estado:boolean,
+        nombre:string,
+        apellido:string,
+        dni:string,
+        correo:string,
+        _id:string,
+        uid:string,
+}
+
+export const userResponseCalendar: userResponseCalendar = {
+    rol:'',
+    estado:false,
+    nombre:'',
+    apellido:'',
+    dni:'',
+    correo:'',
+    _id:'',
+    uid:'',
+}
+
+
+
+export interface userResponseByEmail {
+    
+        rol:string,
+        estado:boolean,
+        nombre:string,
+        apellido:string,
+        dni:string,
+        correo:string,
+        _id:string,
+        uid:string,
+ 
+}
+
+
+
+export const userByMail:userResponseByEmail = {
+        rol:'',
+        estado:false,
+        nombre:'',
+        apellido:'',
+        dni:'',
+        correo:'',
+        _id:'',
+        uid:'',
+  }
+
+  export interface userResponseById {
+    
+    rol:string,
+    estado:boolean,
+    nombre:string,
+    apellido:string,
+    dni:string,
+    correo:string,
+    _id:string,
+    uid:string,
+
+}
+
+export const userById:userResponseById = {
+    rol:'',
+    estado:false,
+    nombre:'',
+    apellido:'',
+    dni:'',
+    correo:'',
+    _id:'',
+    uid:'',
+}
+
+
+
 export interface userResponseAll {
 
         rol:string,
         estado:boolean,
         nombre:string,
+        apellido:string,
+        dni:string,
         correo:string,
         uid:string
 
 }
+
+export interface userResponseSearch {
+
+    rol:string,
+    estado:boolean,
+    nombre:string,
+    apellido:string,
+    dni:string,
+    correo:string,
+    uid:string
+
+}
+
+export const user = {
+    rol:"",
+    estado:false,
+    nombre:"",
+    apellido:"",
+    dni:"",
+    correo:"",
+    uid:""
+
+}
+
+
+
+
+
+
+
+
 
 export interface userResponseShift {
         titulo:string,
@@ -40,11 +151,24 @@ export interface shiftResponseById {
     _id:string
 }
 
+export const shiftById: shiftResponseById = {
+    titulo: "",
+    img: "",
+    linksesion: "",
+    precio: 0,
+    pago:"",
+    moneda: "",
+    estado: false,
+    fechayhora:"",
+    usuario:"",
+    _id:""
+  }
+
 export interface shiftResponseAll{
     titulo:string,
     img:string,
     linksesion:string,
-    precio:string,
+    precio:number,
     pago:string,
     moneda:string,
     estado:boolean,
@@ -81,10 +205,23 @@ export interface receiptResponseById {
     pago:string,
     precio:number,
     moneda:string,
+    linksesion:string,
     estado:boolean,
     fechayhora:string,
     usuario:string,
     _id:string
+}
+
+export const receiptById:receiptResponseById = {
+    titulo:'',
+    pago:'',
+    precio:0,
+    moneda:'',
+    linksesion:'',
+    estado:false,
+    fechayhora:'',
+    usuario:'',
+    _id:''
 }
 
 export interface receiptResponse {
@@ -97,4 +234,5 @@ export interface receiptResponse {
     usuario:string,
     _id:string
 }
+
 

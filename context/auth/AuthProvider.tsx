@@ -49,9 +49,9 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   }
 
 
-  const registerUser = async (nombre: string, correo: string, dni: string, password: string, repeatpassword: string, recordartucontrasena: string): Promise<boolean> => {
+  const registerUser = async (nombre: string, apellido:string, correo: string, dni: string, password: string, repeatpassword: string, recordartucontrasena: string): Promise<boolean> => {
     try {
-      const { data } = await apiInstance.post(import.meta.env.VITE_LOCAL_HOST! + import.meta.env.VITE_REGISTER_APP!, { nombre, correo, dni, password, repeatpassword, recordartucontrasena })
+      const { data } = await apiInstance.post(import.meta.env.VITE_LOCAL_HOST! + import.meta.env.VITE_REGISTER_APP!, { nombre,apellido, correo, dni, password, repeatpassword, recordartucontrasena })
       dispatch({ type: 'Auth - register', payload: data.usuario })
       location.replace('/login')
       return true
@@ -76,18 +76,21 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
 
   
-  const changePassword = async (password: string, repeatpassword: string, token:string): Promise<boolean> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const changePassword = async (password: string, repeatPassword: string, token:any): Promise<boolean> => {
     
+    console.log(token)
 
     try {
       await apiInstance.put(
-        import.meta.env.VITE_LOCAL_HOST! + import.meta.env.VITE_CHANGED_PASSWORD_TOKEN_APP! + token,
-        { password, repeatpassword }
+        import.meta.env.VITE_LOCAL_HOST + import.meta.env.VITE_CHANGED_PASSWORD_TOKEN_APP + token,
+        { password, repeatPassword }
       )
 
       location.replace('/login')
       return true
     } catch (error) {
+      console.log(error)
       return false
     }
 

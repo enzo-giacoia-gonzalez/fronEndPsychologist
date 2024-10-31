@@ -13,7 +13,7 @@ apiInstance.interceptors.response.use(
         position: "top-end",
         icon: "success",
         title: response.data.msg,
-        timer:2000
+        timer:3000
       });
     }
     return response
@@ -34,7 +34,7 @@ apiInstance.interceptors.response.use(
         icon: "error",
         title: err,
         showConfirmButton: false,
-        timer:2000
+        timer:3000
       });
   
     }
@@ -45,15 +45,16 @@ apiInstance.interceptors.response.use(
         icon: "error",
         title: err.response.data.msg,
         showConfirmButton: false,
-        timer:2000
+        timer:3000
       });
     if(err.response.status === 401) {
+      console.log(err)
       Swal.fire({
         position: "top-end",
         icon: "error",
         title: err.response.data.msg,
         showConfirmButton: false,
-        timer:2000
+        timer:3000
       });
         localStorage.clear()
         location.replace('/login')

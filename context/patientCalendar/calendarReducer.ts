@@ -1,13 +1,13 @@
-import { receiptResponse, receiptResponseById, userResponse, userResponseAll, userResponseReceipt } from '../../Interfaces/users';
+import { receiptResponse, receiptResponseById, userResponseAll, userResponseByEmail, userResponseCalendar, userResponseReceipt } from '../../Interfaces/users';
 import { Calendarstate } from './index';
 
 type CalendarstateActionType =
 | { type: 'findUser', payload: Array<[]> }
 | { type: 'findUserAll', payload: userResponseAll[] }
-| { type: 'findUserByMail', payload: userResponse[] }
-| { type: 'findUserById', payload: userResponse[] }
+| { type: 'findUserByMail', payload: userResponseByEmail }
+| { type: 'findUserById', payload: userResponseCalendar }
 | { type: 'findUserReceipt', payload: userResponseReceipt[] }
-| { type: 'findReceiptById', payload: receiptResponseById[] }
+| { type: 'findReceiptById', payload: receiptResponseById }
 | { type: 'findReceipt', payload: receiptResponse[] }
 
 export const calendarReducer = (state: Calendarstate, action: CalendarstateActionType): Calendarstate => {

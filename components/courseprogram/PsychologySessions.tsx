@@ -15,12 +15,12 @@ const PsychologySessions = () => {
     getShift()
   }, [])
   
- const turnoDisponible = shiftAll.filter((turno)=> turno.usuario===usuarioId)
+ const turnoDisponible = shiftAll.filter((turno)=> turno.usuario==usuarioId)
 
  console.log(turnoDisponible)
 
   return (
-    <Grid container py={8}>
+    <Grid container sx={{paddingBottom:'70px'}}>
       <Grid item xs={12} display="flex" justifyContent="space-between" sx={{flexDirection:{xs:'column', md:'row'}, alignItems:{xs:'center', md:'unset'}}} >
       <Grid item xs={12} md={4} sx={{marginLeft:{xs:'15px',md:8}, marginRight:{xs:'15px',md:'0px'}, marginBottom:{xs:'30px', md:'0px'}}}>
       <Card sx={{ maxWidth: 445 }}>
@@ -45,9 +45,10 @@ const PsychologySessions = () => {
   </Card>
       </Grid>
       <Grid item xs={12} md={4} sx={{marginLeft:{xs:'15px',md:8}, marginRight:{xs:'15px',md:'0px'}}}>
-      {!turnoDisponible[0]?.precio?<Typography mb={1} variant="h6">Habla con tu psicologa para que pueda asignarte un turno</Typography>:""}
-      {turnoDisponible[0]?.precio?<Typography mb={1} variant="h5">Tu psicologa ya ha asignado tu turno</Typography>:""}
-       {turnoDisponible[0]?.precio? <Link href="/PayItem" color="#712277">Puedes realizar tu pago por aquí</Link>:""}
+      {!turnoDisponible[0]?.precio && turnoDisponible[0]?.pago==="RECHAZADO" ?<Typography mb={1} variant="h6">Habla con tu psicologa para que pueda asignarte un turno</Typography>:""}
+      {turnoDisponible[0]?.precio && turnoDisponible[0]?.pago==="APROBADO" ?<Typography mb={1} variant="h6">Tu turno ya ha sido pagado exitosamente puedes ver los datos de la sesion en tu correo</Typography>:""}
+      {turnoDisponible[0]?.precio && turnoDisponible[0]?.pago==="RECHAZADO"?<Typography mb={1} variant="h5">Tu psicologa ya ha asignado tu turno</Typography>:""}
+       {turnoDisponible[0]?.precio && turnoDisponible[0]?.pago==="RECHAZADO" ? <Link href="/PayItem" color="#712277">Puedes realizar tu pago por aquí</Link>:""}
       </Grid>
       </Grid>
      

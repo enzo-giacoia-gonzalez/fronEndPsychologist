@@ -25,6 +25,9 @@ interface Props {
 
 const CourseProgramList:FC<Props> = ({videos}) => {
 
+    const rol = localStorage.getItem("rol")
+    const token = localStorage.getItem("token")
+
     
     const {toogleShowVideo, toogleShowVideoSrc, toogleShowVideoExchange, toogleShowCourseProgram, toogleShowImageSrc} = useContext(UiContext)
     const {removeVideo, getIdVideo} = useContext(VideoContext)
@@ -55,12 +58,12 @@ const CourseProgramList:FC<Props> = ({videos}) => {
                             <Button onClick={() => {scrollTo(), toogleShowVideo(),toogleShowVideoExchange(), toogleShowCourseProgram(false),toogleShowVideoSrc(videos.video) , toogleShowImageSrc(videos.img)}} sx={{color:'#C1A6CF'}}><PlayArrowOutlined></PlayArrowOutlined></Button>
                             <Typography>{videos?.nombre}</Typography>
                         </Grid>
-                        <Grid item md={4} lg={2} display="flex" justifyContent="center" alignItems="center">
+                        {rol=="ADMIN_ROLE" && token?<Grid item md={4} lg={2} display="flex" justifyContent="center" alignItems="center">
                             <Button onClick={()=>{getIdVideo(video)}} sx={{color:'#C1A6CF'}}><EditIcon/></Button>
-                        </Grid>
-                        <Grid item md={4} lg={2} display="flex" justifyContent="end" alignItems="center">
+                        </Grid>:""}
+                        {rol=="ADMIN_ROLE" && token?<Grid item md={4} lg={2} display="flex" justifyContent="end" alignItems="center">
                             <Button onClick={()=>{removeVideo(videos?._id)}} sx={{color:'#C1A6CF'}}><DeleteForeverIcon /></Button>
-                        </Grid> 
+                        </Grid>:""}
                     </Card>
                 </Grid>
             </Grid>
