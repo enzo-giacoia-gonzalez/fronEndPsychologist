@@ -4,10 +4,10 @@ import AboutPrograms from '../about/AboutPrograms';
 
 const Start = () => {
   return (
-    <>
-    <About></About>
-    <AboutPrograms></AboutPrograms>
-    </>
+    <div>
+      <About></About>
+      <AboutPrograms></AboutPrograms>
+    </div>
   )
 }
 

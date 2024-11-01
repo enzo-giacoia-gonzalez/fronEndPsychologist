@@ -2,6 +2,7 @@ import { Grid, Card, Typography, Button, Input} from '@mui/material'
 import  { useContext, useState } from 'react'
 import { AuthContext } from '../../context/auth'
 import { useParams } from 'react-router-dom'
+import { tokenId } from '../../types/type-token';
 
 
 
@@ -10,7 +11,7 @@ import { useParams } from 'react-router-dom'
 
 
 
-type tokenId = `${string}-${string}-${string}-${string}-${string}`
+
 
 const ResetPasswordParams = () => {
 

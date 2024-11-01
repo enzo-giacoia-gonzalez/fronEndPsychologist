@@ -1,0 +1,1 @@
+export type tokenId = `${string}-${string}-${string}-${string}-${string}`
