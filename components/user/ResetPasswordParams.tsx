@@ -18,7 +18,7 @@ const ResetPasswordParams = () => {
     
 
 
-const {token}  = useParams<tokenId>()
+    const token  = useParams<tokenId>()
 
     
 

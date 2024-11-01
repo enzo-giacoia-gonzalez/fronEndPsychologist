@@ -1,7 +1,7 @@
 
 import { Navigate, Route, Routes} from 'react-router-dom'
 import Navbar from './Navbar';
-import Start from '../start/start';
+import Start from './../start/Start';
 import SideMenu from './SideMenu';
 import CourseProgram from '../courseprogram/CourseProgram';
 import MyCourses from '../courseprogram/MyCourses';
