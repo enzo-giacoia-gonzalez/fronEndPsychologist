@@ -1,5 +1,6 @@
 import { Button, Card, CardMedia, Grid, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
+import img from "../../img/sanamente.png"
 
 
 
@@ -14,7 +15,7 @@ const AboutPrograms = () => {
                         <CardMedia
                             component="img"
                             height="180"
-                            image="../../img/sanamente.png"
+                            image={img}
                         />      
                 </Card>
             </Grid>

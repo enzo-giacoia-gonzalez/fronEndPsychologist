@@ -16,7 +16,9 @@ import { tokenId } from '../../types/type-token';
 const ResetPasswordParams = () => {
 
     
-
+ 
+     
+    // el token iba entre llaves, por si no anda
 
     const token  = useParams<tokenId>()
 
