@@ -1,6 +1,6 @@
 # React + TypeScript + Vite
 
-Aplicacion FullStack en desarrollo con la siguientes tecnologias React + TypeScript + Vite por el lado del frontEnd y node js / express por el lado del backend. 
+Aplicacion FullStack desarrollada con la siguientes tecnologias React + TypeScript + Vite por el lado del frontEnd y Node js / Express por el lado del backend. 
 Por el lado del frontEnd se estan usando las siguientes dependencias: Material ui, Axios, DotEnv, react router dom, uuid, @paypal/paypal-js. 
 Por el lado del backend: bcryptjs, cloudinary, cors, dotenv, express-fileupload, express-validator, jsonwebtoken, mongoose, nodejs-nodemailer-outlook, nodemailer y uuid
 
