@@ -22,10 +22,10 @@ const AboutPrograms = () => {
 
             <Grid item xs={12} md={3} display="flex" alignItems="start" justifyContent="start" sx={{flexDirection:{xs:'column', md:'row'}}} >
                 <Grid item display="flex" alignItems="start" flexWrap="wrap" sx={{flexDirection:{xs:'column', md:'row'}}} >
-                    <Typography textAlign="start" marginLeft="5px" marginBottom="15px" variant="h2">Sobre mis programas</Typography>
-                    <Typography textAlign="justify" marginLeft="5px" marginBottom="15px">Aprendí inglés desde muy chica, y siempre tuve muy claro que quería dedicarme a enseñar inglés. </Typography>
+                    <Typography textAlign="start" marginLeft="5px" marginBottom="15px" variant="h2">Sobre mis herramientas</Typography>
+                    <Typography textAlign="justify" marginLeft="5px" marginBottom="15px">Desde muy chiquita me di cuenta de que amaba ayudar a las personas y ahí nació mi amor por la psicología.</Typography>
                     <Typography textAlign="justify" marginLeft="5px" marginBottom="15px">Durante años trabajé en escuelas e institutos, en los que el centro eran los niños, niñas y adolescente. ¿Y las personas adultas?</Typography>
-                    <Typography textAlign="justify" marginLeft="5px"marginBottom="15px">Así, empezó a surgir esta loca idea de enseñar inglés a adultos, con sus tiempos, sus desafíos y sus ganas constantes de superarse. </Typography>
+                    <Typography textAlign="justify" marginLeft="5px"marginBottom="15px">Así, empezó a surgir esta loca idea de dar sesiones online con el fin de ayudar a las personas adultas a superar sus dificultades.</Typography>
                     {token && rol=="PATIENT_ROLE" || rol=="ADMIN_ROLE"?<Link to={'/CourseProgram'}><Button sx={{ borderRadius:"8px", bgcolor: 'white', color: 'black', pb: "10px", mt: "15px", marginLeft:'5px', ":hover": { border:1 , color:'black', bgcolor: 'white' } }}>Herramientas de autoayuda</Button></Link>:""}
 
                 </Grid>

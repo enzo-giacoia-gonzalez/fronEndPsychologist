@@ -14,11 +14,11 @@ const About = () => {
             
 
             
-                <Typography mb={1} textAlign="center">Soy romi profe de ingles y speaking coach</Typography>
+                <Typography mb={1} textAlign="center">Soy Liz Psicologa y coach</Typography>
             
 
            
-                <Typography mb={1} textAlign="center">Mi propósito es que aprendas a comunicarte en inglés efectivamente y con confianza</Typography>
+                <Typography mb={1} textAlign="center">Mi propósito es que aprendas herramientas para poder afrontar la vida con confianza</Typography>
            
 
             
