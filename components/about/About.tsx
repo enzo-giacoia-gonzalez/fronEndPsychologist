@@ -10,7 +10,7 @@ const About = () => {
         <Grid container display="flex" py="100px" color="white" bgcolor="#B2D4CB" alignItems="center" flexDirection="column">
             <Grid item xs={12} mb="10px" display="flex" alignItems="center" flexDirection="column">
 
-                <strong><Typography mb={1} textAlign="center" variant="h2">Hi welcome</Typography></strong>
+                <strong><Typography mb={1} textAlign="center" variant="h2">Hola, bievenidos a mi sitio</Typography></strong>
             
 
             
